@@ -1,6 +1,7 @@
 ;;-----------------------------------------------------
 ;;Initialization for OCaml mode
 ;;-----------------------------------------------------
+(require-package 'taureg)
 (require 'tuareg)
 (setq auto-mode-alist 
       (append '(("\\.ml[ily]?$" . tuareg-mode))

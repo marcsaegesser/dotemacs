@@ -3,11 +3,12 @@
 
 (require-package 'color-theme-sanityinc-solarized)
 (require-package 'color-theme-sanityinc-tomorrow)
-(require-package 'color-theme-colorful-obsolescence)
+;; (require-package 'color-theme-colorful-obsolescence)
 (require-package 'color-theme-eclipse)
 (require-package 'color-theme-molokai)
 (require-package 'color-theme-monokai)
-(require-package 'color-theme-wombat+)
+(require-package 'zenburn-theme)
+;; (require-package 'color-theme-wombat+)
 
 ;;------------------------------------------------------------------------------
 ;; Old-style color theming support (via color-theme.el)

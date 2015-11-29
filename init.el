@@ -87,12 +87,12 @@
 (require 'init-sql)
 (require 'init-scalamode2)
 (require 'init-ecb)
-(require 'init-ocaml)
+;; (require 'init-ocaml)
 
 (require 'init-paredit)
 (require 'init-lisp)
 (require 'init-slime)
-(require 'init-clojure)
+;; (require 'init-clojure)
 (require 'init-common-lisp)
 
 (require 'init-erc)
@@ -109,6 +109,7 @@
 
 ;; Extra packages which don't require any configuration
 
+(require-package 'projectile)
 (projectile-global-mode)
 
 (require-package 'gnuplot)

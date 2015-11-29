@@ -95,6 +95,7 @@
      (when *is-a-mac*
        (define-key org-mode-map (kbd "M-h") nil))
      (define-key org-mode-map (kbd "C-M-<up>") 'org-up-element)
+     (require-package 'org-exp)
      (require 'org-exp)
      (require 'org-clock)
      (when *is-a-mac*

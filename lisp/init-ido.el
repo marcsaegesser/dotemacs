@@ -1,7 +1,11 @@
 ;; Use C-f during file selection to switch to regular find-file
+
 (ido-mode t)
 (ido-everywhere t)
+(require-package 'ido-vertical-mode)
 (ido-vertical-mode t)
+
+(require-package 'flx-ido)
 (flx-ido-mode t)
 
 (setq ido-enable-flex-matching t)

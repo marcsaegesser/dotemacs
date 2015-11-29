@@ -1,6 +1,7 @@
 ;;----------------------------------------------------
 ;;emacs-ecb configuration
 ;;----------------------------------------------------
-(require 'ecb-autoloads)
+;; (require-package 'ecb-autoloads)
+;; (require 'ecb-autoloads)
 
 (provide 'init-ecb)

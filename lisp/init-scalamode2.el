@@ -3,7 +3,9 @@
 ;;-----------------------------------------------------
 ;; (add-to-list 'load-path "~/work/ensime-emacs")
 ;;(add-to-list 'load-path "~/.emacs.d/site-lisp/scamacs")
+(require-package 'scala-mode2)
 (require 'scala-mode2)
+(require-package 'ensime)
 (require 'ensime)
 ;;(require 'ensime-ecb)
 

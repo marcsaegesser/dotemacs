@@ -60,6 +60,7 @@
 (global-undo-tree-mode)
 (diminish 'undo-tree-mode)
 
+(require-package 'volatile-highlights)
 (require 'volatile-highlights)
 (volatile-highlights-mode t)
 
@@ -153,6 +154,7 @@
 (global-set-key (kbd "C-c c a") 'mc/edit-beginnings-of-lines)
 
 ;; smooth-scrolling
+(require-package 'smooth-scroll)
 (require 'smooth-scroll)
 ;; (smooth-scroll-mode nil)
 (global-set-key (kbd "C-u") 'scroll-down)
