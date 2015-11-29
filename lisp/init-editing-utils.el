@@ -34,8 +34,8 @@
  truncate-partial-width-windows nil
  visible-bell t
  next-screen-context-lines 2
- scroll-margin 3
- scroll-conservatively 1
+ scroll-margin 0
+ scroll-conservatively 10
  ;; scroll-up-aggressively 0.01
  ;; scroll-down-aggressively 0.01
  )

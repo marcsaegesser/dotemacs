@@ -4,12 +4,10 @@
 ;; (add-to-list 'load-path "~/work/ensime-emacs")
 ;;(add-to-list 'load-path "~/.emacs.d/site-lisp/scamacs")
 (require-package 'scala-mode2)
-(require 'scala-mode2)
 (require-package 'ensime)
-(require 'ensime)
-;;(require 'ensime-ecb)
 
-;;(setq ensime-default-java-home "/usr/lib/jvm/java-7-openjdk-amd64/jre")
+(require 'scala-mode2)
+(require 'ensime)
 
 (defun scala-turn-off-indent-tabs-mode ()
   (setq indent-tabs-mode nil))
@@ -51,8 +49,6 @@
 
   ;; Bind F5 to launch debugger
   (local-set-key (kbd "<f5>") 'ensime-db-run)
-  (local-set-key (kbd "<f7>") 'ensime-builder-rebuild)
-  (local-set-key (kbd "C-<f7>") 'ensime-builder-build)
 
   ;; and other bindings here
   (rainbow-delimiters-mode)

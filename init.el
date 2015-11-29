@@ -96,6 +96,7 @@
 (require 'init-common-lisp)
 
 (require 'init-erc)
+(require 'init-ansi-term)
 
 ;;(require 'init-guidekey)
 
