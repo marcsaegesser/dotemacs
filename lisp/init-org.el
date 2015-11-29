@@ -88,6 +88,8 @@
 ;;                   (re-search-backward "^[0-9]+:[0-9]+-[0-9]+:[0-9]+ " nil t))
 ;;                 (insert (match-string 0))))))
 
+;; (require-package 'org-exp)
+;; (require-package 'org-clock)
 
 (eval-after-load 'org
   '(progn
@@ -95,9 +97,8 @@
      (when *is-a-mac*
        (define-key org-mode-map (kbd "M-h") nil))
      (define-key org-mode-map (kbd "C-M-<up>") 'org-up-element)
-     (require-package 'org-exp)
-     (require 'org-exp)
-     (require 'org-clock)
+     ;; (require 'org-exp)
+     ;; (require 'org-clock)
      (when *is-a-mac*
        (require 'org-mac-link-grabber)
        (define-key org-mode-map (kbd "C-c g") 'omlg-grab-link))
