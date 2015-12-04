@@ -105,6 +105,7 @@
 
 (require 'init-marmalade)
 (require 'init-misc)
+(require 'init-workgroups)
 
 ;;(require 'init-xiki)
 
