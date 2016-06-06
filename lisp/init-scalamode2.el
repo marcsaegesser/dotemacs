@@ -3,10 +3,10 @@
 ;;-----------------------------------------------------
 ;; (add-to-list 'load-path "~/work/ensime-emacs")
 ;;(add-to-list 'load-path "~/.emacs.d/site-lisp/scamacs")
-(require-package 'scala-mode2)
+(require-package 'scala-mode)
 (require-package 'ensime)
 
-(require 'scala-mode2)
+(require 'scala-mode)
 (require 'ensime)
 
 (defun scala-turn-off-indent-tabs-mode ()
@@ -53,6 +53,8 @@
   ;; and other bindings here
   (rainbow-delimiters-mode)
   (electric-pair-mode t)
+  (setq prettify-symbols-alist scala-prettify-symbols-alist)
+  (prettify-symbols-mode)
 ))
 
 (provide 'init-scalamode2)

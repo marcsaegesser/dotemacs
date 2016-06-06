@@ -138,7 +138,7 @@
 (require-package 'avy)
 (global-set-key (kbd "C-;") 'avy-goto-subword-1)
 (global-set-key (kbd "C-:") 'avy-goto-word-0)
-(global-set-key (kbd "M-g g") 'avy-goto-line)
+(global-set-key (kbd "M-g M-g") 'avy-goto-line)
 (setq avy-background t)
 
 (require-package 'multiple-cursors)

@@ -41,6 +41,8 @@
   (if (memq this-command paredit-minibuffer-commands)
       (enable-paredit-mode)))
 
+(global-set-key (kbd "M-[") 'paredit-wrap-square)
+
 ;; ----------------------------------------------------------------------------
 ;; Enable some handy paredit functions in all prog modes
 ;; ----------------------------------------------------------------------------
