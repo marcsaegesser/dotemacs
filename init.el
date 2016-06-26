@@ -34,6 +34,12 @@
 ;;----------------------------------------------------------------------------
 
 (require-package 'use-package)
+
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)                ;; if you use :diminish
+(require 'bind-key)                ;; if you use any :bind variant
+
 (require-package 'wgrep)
 (require-package 'project-local-variables)
 (require-package 'diminish)
@@ -108,6 +114,8 @@
 (require 'init-misc)
 (require 'init-workgroups)
 
+(require 'init-crux)
+
 ;;(require 'init-xiki)
 
 ;; Extra packages which don't require any configuration
@@ -122,6 +130,7 @@
 (when *is-a-mac*
   (require-package 'osx-location))
 (require-package 'regex-tool)
+
 
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient

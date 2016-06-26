@@ -5,14 +5,14 @@
 ;;(add-to-list 'load-path "~/.emacs.d/site-lisp/scamacs")
 ;; (add-to-list 'load-path (expand-file-name "ensime-emacs" user-emacs-directory))
 
-(require-package 'scala-mode2)
+(require-package 'scala-mode)
 (require-package 'ensime)
 
 (use-package highlight-symbol
   :ensure t
   :diminish highlight-symbol-mode
   :commands highlight-symbol
-  :bind ("s-h" . highlight-symbol))
+  )
 
 (use-package smartparens
   :ensure t
@@ -42,7 +42,7 @@
   (bind-key "s-<delete>" 'sp-kill-sexp smartparens-mode-map)
   (bind-key "s-<backspace>" 'sp-backward-kill-sexp smartparens-mode-map))
 
-(require 'scala-mode2)
+(require 'scala-mode)
 (require 'ensime)
 
 (defun scala-turn-off-indent-tabs-mode ()
@@ -89,6 +89,8 @@
   ;; and other bindings here
   (rainbow-delimiters-mode)
   (electric-pair-mode t)
+  (setq prettify-symbols-alist scala-prettify-symbols-alist)
+  (prettify-symbols-mode)
 ))
 
 (provide 'init-scalamode2)
