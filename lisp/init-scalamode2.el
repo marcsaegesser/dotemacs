@@ -89,7 +89,10 @@
   ;; and other bindings here
   (rainbow-delimiters-mode)
   (electric-pair-mode t)
+  (smartparens-strict-mode)
+  (smartparens-mode)
   (setq prettify-symbols-alist scala-prettify-symbols-alist)
+  (highlight-symbol-mode)
   (prettify-symbols-mode)
 ))
 
