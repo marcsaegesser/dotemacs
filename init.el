@@ -33,6 +33,7 @@
 ;; Load configs for specific features and modes
 ;;----------------------------------------------------------------------------
 
+(require-package 'use-package)
 (require-package 'wgrep)
 (require-package 'project-local-variables)
 (require-package 'diminish)
