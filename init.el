@@ -121,6 +121,7 @@
 ;; Extra packages which don't require any configuration
 
 (require-package 'projectile)
+(setq projectile-globally-ignored-directories (append '(".ensime" ".ensime_cache" "target")))
 (projectile-global-mode)
 
 (require-package 'gnuplot)
