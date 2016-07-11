@@ -1,9 +1,7 @@
 ;;-----------------------------------------------------
 ;;Initialization for Scala-mode-2
 ;;-----------------------------------------------------
-;; (add-to-list 'load-path "~/work/ensime-emacs")
-;;(add-to-list 'load-path "~/.emacs.d/site-lisp/scamacs")
-;; (add-to-list 'load-path (expand-file-name "ensime-emacs" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "ensime-emacs" user-emacs-directory))
 
 (require-package 'scala-mode)
 (require-package 'ensime)
@@ -39,12 +37,11 @@
 
   (rainbow-delimiters-mode)
   (electric-pair-mode t)
-  ;; (smartparens-mode)
   (setq prettify-symbols-alist scala-prettify-symbols-alist)
   (highlight-symbol-mode)
   (prettify-symbols-mode)
   (setq ensime-auto-generate-config t
-        ensime-graphical-tooltips nil
+        ensime-graphical-tooltips t
         ensime-implicit-gutter-icons nil
         ensime-sem-high-faces '((var . (:inherit font-lock-warning-face))
                                 (val . (:inherit font-lock-constant-face :slant italic))
@@ -61,6 +58,7 @@
                                 (implicitParams . ensime-implicit-highlight)
                                 (deprecated . (:strike-through "dark gray")))
         ensime-server-version "2.0.0-SNAPSHOT"
+        ensime-startup-snapshot-notification nil
         )
 ))
 
