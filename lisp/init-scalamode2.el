@@ -1,10 +1,8 @@
 ;;-----------------------------------------------------
 ;;Initialization for Scala-mode-2
 ;;-----------------------------------------------------
-(add-to-list 'load-path (expand-file-name "ensime-emacs" user-emacs-directory))
-
-(require-package 'scala-mode)
-(require-package 'ensime)
+;; The following is used for ensime-emacs development work. Uncomment and then clone ensime-emacs into this directory.
+;; (add-to-list 'load-path (expand-file-name "ensime-emacs" user-emacs-directory))
 
 (use-package highlight-symbol
   :ensure t
@@ -12,54 +10,33 @@
   :commands highlight-symbol
   )
 
-(require 'scala-mode)
-(require 'ensime)
+(defun scala-ret-handler ()
+  (interactive)
+  (reindent-then-newline-and-indent)
+  (scala-indent:insert-asterisk-on-multiline-comment))
 
-(defun scala-turn-off-indent-tabs-mode ()
-  (setq indent-tabs-mode nil))
-
-(add-hook 'scala-mode-hook 'scala-turn-off-indent-tabs-mode)
-
-;;Scala-mode specific
-(add-hook 'scala-mode-hook '(lambda ()
-  (ensime-mode 1)
-
-  ;; Ret takes care of proper indenting and asterisks in multiline comments
-  (local-set-key (kbd "RET") '(lambda ()
-    (interactive)
-    (reindent-then-newline-and-indent)
-    (scala-indent:insert-asterisk-on-multiline-comment)))
-
-  (local-set-key (kbd "<backtab>") 'scala-indent:indent-with-reluctant-strategy)
-
-  ;; Bind F5 to launch debugger
-  (local-set-key (kbd "<f5>") 'ensime-db-run)
-
+(use-package ensime
+  :ensure t ;; This will use the non-stable version! See http://ensime.github.io/editors/emacs/install/
+  :bind (("RET" . scala-ret-handler) ;; Note to self: Why can't I use a lambda here?
+         ("<backtab>" . scala-indent:indent-with-reluctant-strategy)
+         ("<f5>" . ensime-db-run))
+  :config
   (rainbow-delimiters-mode)
   (electric-pair-mode t)
-  (setq prettify-symbols-alist scala-prettify-symbols-alist)
   (highlight-symbol-mode)
+  (setq prettify-symbols-alist scala-prettify-symbols-alist)
   (prettify-symbols-mode)
   (setq ensime-auto-generate-config t
+        indent-tabs-mode nil
         ensime-graphical-tooltips t
         ensime-implicit-gutter-icons nil
-        ensime-sem-high-faces '((var . (:inherit font-lock-warning-face))
-                                (val . (:inherit font-lock-constant-face :slant italic))
-                                (varField . (:inherit font-lock-warning-face :weight bold))
-                                (valField . (:inherit font-lock-constant-face :slant italic :weight bold))
-                                (functionCall . font-lock-function-name-face)
-                                (operator . font-lock-keyword-face)
-                                (param . (:slant italic))
-                                (class . font-lock-type-face)
-                                (trait .  (:inherit font-lock-type-face :slant italic))
-                                (object . font-lock-constant-face)
-                                (package . font-lock-preprocessor-face)
-                                (implicitConversion . ensime-implicit-highlight)
-                                (implicitParams . ensime-implicit-highlight)
-                                (deprecated . (:strike-through "dark gray")))
-        ensime-server-version "2.0.0-SNAPSHOT"
-        ensime-startup-snapshot-notification nil
+        ;; Modify default faces with bold for varField and valField
+        ensime-sem-high-faces (nconc '((varField . (:inherit font-lock-warning-face :weight bold))
+                                       (valField . (:inherit font-lock-constant-face :slant italic :weight bold)))
+                                     ensime-sem-high-faces)
+        ensime-server-version "2.0.0-SNAPSHOT"   ;; Track development branch of the server
+        ensime-startup-snapshot-notification nil ;; Acknowledge that we're crazy enough to use the dev branch.
         )
-))
+  )
 
 (provide 'init-scalamode2)
