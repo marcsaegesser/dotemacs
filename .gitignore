@@ -27,3 +27,8 @@ site-lisp/package/
 /projectile-bookmarks.eld
 /menu_log.notes
 /abbrev_defs
+.cask
+*.last
+recentf
+smex-items
+ensime-emacs
