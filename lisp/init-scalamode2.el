@@ -21,13 +21,7 @@
          ("<backtab>" . scala-indent:indent-with-reluctant-strategy)
          ("<f5>" . ensime-db-run))
   :config
-  (rainbow-delimiters-mode)
-  (electric-pair-mode t)
-  (highlight-symbol-mode)
-  (setq prettify-symbols-alist scala-prettify-symbols-alist)
-  (prettify-symbols-mode)
   (setq ensime-auto-generate-config t
-        indent-tabs-mode nil
         ensime-graphical-tooltips t
         ensime-implicit-gutter-icons nil
         ;; Modify default faces with bold for varField and valField
@@ -38,5 +32,14 @@
         ensime-startup-snapshot-notification nil ;; Acknowledge that we're crazy enough to use the dev branch.
         )
   )
+
+(add-hook 'scala-mode-hook
+          (lambda ()
+            (setq prettify-symbols-alist scala-prettify-symbols-alist
+                  indent-tabs-mode nil)
+            (rainbow-delimiters-mode t)
+            (electric-pair-mode t)
+            (highlight-symbol-mode t)
+            (prettify-symbols-mode t)))
 
 (provide 'init-scalamode2)
