@@ -19,11 +19,14 @@
   :ensure t ;; This will use the non-stable version! See http://ensime.github.io/editors/emacs/install/
   :bind (("RET" . scala-ret-handler) ;; Note to self: Why can't I use a lambda here?
          ("<backtab>" . scala-indent:indent-with-reluctant-strategy)
+         ("C-c C-v t" . ensime-type-at-point-full-name) ;; Swap standard type-at-point bindings so that
+         ("C-c C-v T" . ensime-type-at-point)           ;; the easier one to type provides the full type
          ("<f5>" . ensime-db-run))
   :config
   (setq ensime-auto-generate-config t
         ensime-graphical-tooltips t
         ensime-implicit-gutter-icons nil
+        ensime-sbt-perform-on-save "compile"
         ;; Modify default faces with bold for varField and valField
         ensime-sem-high-faces (nconc '((varField . (:inherit font-lock-warning-face :weight bold))
                                        (valField . (:inherit font-lock-constant-face :slant italic :weight bold)))
