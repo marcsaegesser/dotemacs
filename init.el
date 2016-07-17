@@ -132,6 +132,8 @@
   (require-package 'osx-location))
 (require-package 'regex-tool)
 
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "google-chrome")
 
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient
