@@ -2,7 +2,7 @@
 ;;Initialization for Scala-mode-2
 ;;-----------------------------------------------------
 ;; The following is used for ensime-emacs development work. Uncomment and then clone ensime-emacs into this directory.
-;; (add-to-list 'load-path (expand-file-name "ensime-emacs" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "ensime-emacs" user-emacs-directory))
 
 (use-package highlight-symbol
   :ensure t
@@ -15,8 +15,36 @@
   (reindent-then-newline-and-indent)
   (scala-indent:insert-asterisk-on-multiline-comment))
 
+(defcustom
+  scala-mode-prettify-symbols
+  '(("<=" . ?≤)
+    (">=" . ?≥)
+    ("==" . ?≡)
+    ("!" . ?¬)
+    ("!=" . ?≢)
+    ("&&" . ?∧)
+    ("||" . ?∨)
+    ("true" . ?⊤)
+    ("false" . ?⊥)
+    ("Int" . ?ℤ)
+    ("Boolean" . ?𝔹)
+    ("->" . ?→)
+    ("<-" . ?←)
+    ("=>" . ?⇒)
+    ("<=>" . ?⇔)
+    ("-->" . ?⟶)
+    ("<->" . ?↔)
+    ("<--" . ?⟵)
+    ("<-->" . ?⟷)
+    ("==>" . ?⟹)
+    ("<==" . ?⟸)
+    ("<==>" . ?⟺)
+    ("~>" . ?⇝)
+    ("<~" . ?⇜))
+  "Prettify rules for arrow related code pieces.")
+
 (use-package ensime
-  :ensure t ;; This will use the non-stable version! See http://ensime.github.io/editors/emacs/install/
+  ;; :ensure t ;; This will use the non-stable version! See http://ensime.github.io/editors/emacs/install/
   :bind (("RET" . scala-ret-handler) ;; Note to self: Why can't I use a lambda here?
          ("<backtab>" . scala-indent:indent-with-reluctant-strategy)
          ("C-c C-v t" . ensime-type-at-point-full-name) ;; Swap standard type-at-point bindings so that
@@ -38,7 +66,7 @@
 
 (add-hook 'scala-mode-hook
           (lambda ()
-            (setq prettify-symbols-alist scala-prettify-symbols-alist
+            (setq prettify-symbols-alist scala-mode-prettify-symbols
                   indent-tabs-mode nil)
             (rainbow-delimiters-mode t)
             (electric-pair-mode t)
