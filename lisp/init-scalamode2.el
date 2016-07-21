@@ -45,11 +45,12 @@
 
 (use-package ensime
   ;; :ensure t ;; This will use the non-stable version! See http://ensime.github.io/editors/emacs/install/
-  :bind (("RET" . scala-ret-handler) ;; Note to self: Why can't I use a lambda here?
-         ("<backtab>" . scala-indent:indent-with-reluctant-strategy)
-         ("C-c C-v t" . ensime-type-at-point-full-name) ;; Swap standard type-at-point bindings so that
-         ("C-c C-v T" . ensime-type-at-point)           ;; the easier one to type provides the full type
-         ("<f5>" . ensime-db-run))
+  :bind (
+         :map ensime-mode-map
+              ("RET" . scala-ret-handler) ;; Note to self: Why can't I use a lambda here?
+              ("<backtab>" . scala-indent:indent-with-reluctant-strategy)
+              ("C-c C-v t" . ensime-type-at-point-full-name) ;; Swap standard type-at-point bindings so that
+              ("C-c C-v T" . ensime-type-at-point))          ;; the easier one to type provides the full type
   :config
   (setq ensime-auto-generate-config t
         ensime-graphical-tooltips t
