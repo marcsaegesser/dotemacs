@@ -2,7 +2,7 @@
 ;;Initialization for Scala-mode-2
 ;;-----------------------------------------------------
 ;; The following is used for ensime-emacs development work. Uncomment and then clone ensime-emacs into this directory.
-(add-to-list 'load-path (expand-file-name "ensime-emacs" user-emacs-directory))
+;; (add-to-list 'load-path (expand-file-name "ensime-emacs" user-emacs-directory))
 
 (use-package highlight-symbol
   :ensure t
@@ -43,8 +43,14 @@
     ("<~" . ?⇜))
   "Prettify rules for arrow related code pieces.")
 
+(use-package popup-imenu
+  :ensure t
+  :commands popup-imenu
+  :bind ("M-i" . popup-imenu))
+
 (use-package ensime
-  ;; :ensure t ;; This will use the non-stable version! See http://ensime.github.io/editors/emacs/install/
+  :ensure t ;; This will use the non-stable version! See http://ensime.github.io/editors/emacs/install/
+  :pin melpa
   :bind (
          :map ensime-mode-map
               ("RET" . scala-ret-handler) ;; Note to self: Why can't I use a lambda here?
@@ -53,17 +59,24 @@
               ("C-c C-v T" . ensime-type-at-point))          ;; the easier one to type provides the full type
   :config
   (setq ensime-auto-generate-config t
-        ensime-graphical-tooltips t
+        ensime-graphical-tooltips nil
         ensime-implicit-gutter-icons nil
-        ensime-sbt-perform-on-save "compile"
+        ensime-startup-notification nil
+        ;; ensime-sbt-perform-on-save "compile"
         ;; Modify default faces with bold for varField and valField
         ensime-sem-high-faces (nconc '((varField . (:inherit font-lock-warning-face :weight bold))
                                        (valField . (:inherit font-lock-constant-face :slant italic :weight bold)))
                                      ensime-sem-high-faces)
-        ensime-server-version "2.0.0-SNAPSHOT"   ;; Track development branch of the server
+        ;; ensime-server-version "2.0.0-graph-SNAPSHOT"   ;; Track development branch of the server
         ensime-startup-snapshot-notification nil ;; Acknowledge that we're crazy enough to use the dev branch.
         )
   )
+
+(use-package sbt-mode
+  :pin melpa)
+
+(use-package scala-mode
+  :pin melpa)
 
 (add-hook 'scala-mode-hook
           (lambda ()

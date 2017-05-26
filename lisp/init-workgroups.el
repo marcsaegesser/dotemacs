@@ -1,8 +1,10 @@
-(require-package 'workgroups2)
-(require 'workgroups2)
+(use-package workgroups2
+  :ensure t
+  :config
+  (setq wg-emacs-exit-save-behavior           'save
+        wg-workgroups-mode-exit-save-behavior 'save
+        wg-flag-modified t))
 
-(setq wg-session-file "~/.emacs_workgroups")
-
-(workgroups-mode 1)
+(workgroups-mode t)
 
 (provide 'init-workgroups)

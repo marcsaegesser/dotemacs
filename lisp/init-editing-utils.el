@@ -32,7 +32,7 @@
  tooltip-delay 1.5
  truncate-lines t
  truncate-partial-width-windows nil
- visible-bell t
+ visible-bell nil
  next-screen-context-lines 2
  scroll-margin 0
  scroll-conservatively 10
