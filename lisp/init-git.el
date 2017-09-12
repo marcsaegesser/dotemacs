@@ -41,6 +41,16 @@
 ;;      (diminish 'magit-wip-save-mode)))
 
 
+
+(use-package git-gutter
+  :ensure t
+  :config
+  (custom-set-variables
+   '(git-gutter:update-interval 2))
+  :diminish git-gutter-mode
+  :commands git-gutter-mode)
+
+
 ;;; Use the fringe version of git-gutter
 
 (eval-after-load 'git-gutter

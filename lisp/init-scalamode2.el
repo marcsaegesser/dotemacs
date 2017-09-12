@@ -48,6 +48,45 @@
   :commands popup-imenu
   :bind ("M-i" . popup-imenu))
 
+;; Borrowed from Sam Halliday but I haven't been able to make this transistion work for me, yet
+;; (use-package smartparens
+;;   :ensure t
+;;   :diminish smartparens-mode
+;;   :commands
+;;   smartparens-strict-mode
+;;   smartparens-mode
+;;   sp-restrict-to-pairs-interactive
+;;   sp-local-pair
+;;   :init
+;;   (setq sp-interactive-dwim t)
+;;   :config
+;;   (require 'smartparens-config)
+;;   (sp-use-smartparens-bindings)
+;;   (sp-pair "(" ")" :wrap "C-(") ;; how do people live without this?
+;;   (sp-pair "[" "]" :wrap "s-[") ;; C-[ sends ESC
+;;   (sp-pair "{" "}" :wrap "C-{")
+;;   (sp-pair "<" ">" :wrap "C-<")
+
+;;   ;; nice whitespace / indentation when creating statements
+;;   (sp-local-pair '(c-mode java-mode) "(" nil :post-handlers '(("||\n[i]" "RET")))
+;;   (sp-local-pair '(c-mode java-mode) "{" nil :post-handlers '(("||\n[i]" "RET")))
+;;   (sp-local-pair '(java-mode) "<" nil :post-handlers '(("||\n[i]" "RET")))
+
+;;   ;; WORKAROUND https://github.com/Fuco1/smartparens/issues/543
+;;   (bind-key "C-<left>" nil smartparens-mode-map)
+;;   (bind-key "C-<right>" nil smartparens-mode-map)
+
+;;   (bind-key "s-{" 'sp-rewrap-sexp smartparens-mode-map)
+
+;;   (bind-key "s-<delete>" 'sp-kill-sexp smartparens-mode-map)
+;;   (bind-key "s-<backspace>" 'sp-backward-kill-sexp smartparens-mode-map)
+;;   (bind-key "s-<home>" 'sp-beginning-of-sexp smartparens-mode-map)
+;;   (bind-key "s-<end>" 'sp-end-of-sexp smartparens-mode-map)
+;;   (bind-key "s-<left>" 'sp-beginning-of-previous-sexp smartparens-mode-map)
+;;   (bind-key "s-<right>" 'sp-next-sexp smartparens-mode-map)
+;;   (bind-key "s-<up>" 'sp-backward-up-sexp smartparens-mode-map)
+;;   (bind-key "s-<down>" 'sp-down-sexp smartparens-mode-map))
+
 (use-package ensime
   :ensure t ;; This will use the non-stable version! See http://ensime.github.io/editors/emacs/install/
   :pin melpa
@@ -84,7 +123,9 @@
                   indent-tabs-mode nil)
             (rainbow-delimiters-mode t)
             (electric-pair-mode t)
+            ;; (smartparens-strict-mode t)
             (highlight-symbol-mode t)
-            (prettify-symbols-mode t)))
+            (prettify-symbols-mode t)
+            (git-gutter-mode t)))
 
 (provide 'init-scalamode2)
