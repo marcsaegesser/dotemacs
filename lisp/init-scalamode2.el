@@ -89,7 +89,7 @@
 
 (use-package ensime
   :ensure t ;; This will use the non-stable version! See http://ensime.github.io/editors/emacs/install/
-  :pin melpa
+  :pin melpa-stable
   :bind (
          :map ensime-mode-map
               ("RET" . scala-ret-handler) ;; Note to self: Why can't I use a lambda here?
@@ -107,7 +107,7 @@
                                        (valField . (:inherit font-lock-constant-face :slant italic :weight bold)))
                                      ensime-sem-high-faces)
         ;; ensime-server-version "2.0.0-graph-SNAPSHOT"   ;; Track development branch of the server
-        ensime-startup-snapshot-notification nil ;; Acknowledge that we're crazy enough to use the dev branch.
+        ;; ensime-startup-snapshot-notification nil ;; Acknowledge that we're crazy enough to use the dev branch.
         )
   )
 

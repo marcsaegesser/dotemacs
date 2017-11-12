@@ -116,13 +116,13 @@
 
 (require 'init-crux)
 
-;;(require 'init-xiki)
+;; (require 'init-xiki)
 
 ;; Extra packages which don't require any configuration
 
 (require-package 'projectile)
-(setq projectile-globally-ignored-directories (append '(".ensime" ".ensime_cache" "target")))
-(projectile-global-mode)
+(setq projectile-globally-ignored-directories (append '(".ensime" ".ensime_cache" "target" "ami-server")))
+(projectile-mode)
 
 (require-package 'gnuplot)
 (require-package 'lua-mode)
