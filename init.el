@@ -10,7 +10,7 @@
 (package-initialize)
 
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
-(require 'init-benchmarking) ;; Measure startup time
+;; (require 'init-benchmarking) ;; Measure startup time
 
 ;;----------------------------------------------------------------------------
 ;; Which functionality to enable (use t or nil for true and false)
@@ -23,7 +23,7 @@
 ;;----------------------------------------------------------------------------
 ;; Bootstrap config
 ;;----------------------------------------------------------------------------
-(require 'init-compat)
+;; (require 'init-compat)
 (require 'init-utils)
 (require 'init-site-lisp) ;; Must come before elpa, as it may provide package.el
 (require 'init-elpa)      ;; Machinery for installing required packages
@@ -37,19 +37,23 @@
 
 (eval-when-compile
   (require 'use-package))
-(require 'diminish)                ;; if you use :diminish
-(require 'bind-key)                ;; if you use any :bind variant
 
-(require-package 'wgrep)
-(require-package 'project-local-variables)
-(require-package 'diminish)
-(require-package 'scratch)
-(require-package 'mwe-log-commands)
+(use-package diminish :demand t)
+;; (require 'diminish)                ;; if you use :diminish
+;; (require 'bind-key)                ;; if you use any :bind variant
 
-(require 'init-frame-hooks)
-(require 'init-xterm)
-(require 'init-themes)
-(require 'init-osx-keys)
+(use-package wgrep
+  :defer 5)
+;; (require-package 'wgrep)
+;; (require-package 'project-local-variables)
+;; (require-package 'diminish)
+;; (require-package 'scratch)
+;; (require-package 'mwe-log-commands)
+
+;; (require 'init-frame-hooks)
+;; (require 'init-xterm)
+;; (require 'init-themes)
+;; (require 'init-osx-keys)
 (require 'init-gui-frames)
 (require 'init-maxframe)
 (require 'init-proxies)
@@ -67,7 +71,7 @@
 (require 'init-sessions)
 (require 'init-fonts)
 (require 'init-mmm)
-(require 'init-growl)
+;; (require 'init-growl)
 
 (require 'init-editing-utils)
 (require 'init-greek)
@@ -75,22 +79,22 @@
 (require 'init-darcs)
 (require 'init-git)
 
-(require 'init-crontab)
-(require 'init-textile)
+;; (require 'init-crontab)
+;; (require 'init-textile)
 (require 'init-markdown)
-(require 'init-csv)
-(require 'init-erlang)
+;; (require 'init-csv)
+;; (require 'init-erlang)
 (require 'init-javascript)
 (require 'init-sh)
 (require 'init-php)
 (require 'init-org)
-(require 'init-nxml)
+;; (require 'init-nxml)
 (require 'init-css)
 (require 'init-haml)
 (require 'init-python-mode)
-(require 'init-haskell)
-(require 'init-ruby-mode)
-(require 'init-rails)
+;; (require 'init-haskell)
+;; (require 'init-ruby-mode)
+;; (require 'init-rails)
 (require 'init-sql)
 (require 'init-scalamode2)
 (require 'init-ecb)
@@ -98,11 +102,11 @@
 
 (require 'init-paredit)
 (require 'init-lisp)
-(require 'init-slime)
+;; (require 'init-slime)
 ;; (require 'init-clojure)
-(require 'init-common-lisp)
+;; (require 'init-common-lisp)
 
-(require 'init-erc)
+;; (require 'init-erc)
 (require 'init-ansi-term)
 
 ;;(require 'init-guidekey)
@@ -111,7 +115,7 @@
   (require 'init-spelling))
 
 (require 'init-marmalade)
-(require 'init-misc)
+;; (require 'init-misc)
 (require 'init-workgroups)
 
 (require 'init-crux)
