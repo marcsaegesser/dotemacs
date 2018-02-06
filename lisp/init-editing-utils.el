@@ -132,11 +132,18 @@
 (global-set-key (kbd "C-x C-.") 'pop-global-mark)
 
 
-(require-package 'avy)
-(global-set-key (kbd "C-;") 'avy-goto-subword-1)
-(global-set-key (kbd "C-:") 'avy-goto-word-0)
-(global-set-key (kbd "M-g M-g") 'avy-goto-line)
-(setq avy-background t)
+(use-package avy
+  :ensure t
+  :init (setq avy-background t)
+  :bind (("C-;" . avy-goto-subword-1)
+         ("C-:" . avy-goto-word-0)
+         ("M-g M-g" . avy-goto-line))
+  )
+
+(use-package avy-zap
+  :ensure t
+  :bind (("M-z" . avy-zap-to-char-dwim)
+         ("M-Z" . avy-zap-up-to-char-dwim)))
 
 (require-package 'multiple-cursors)
 ;; multiple-cursors
