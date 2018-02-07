@@ -39,11 +39,9 @@
   (require 'use-package))
 
 (use-package diminish :demand t)
-;; (require 'diminish)                ;; if you use :diminish
 ;; (require 'bind-key)                ;; if you use any :bind variant
 
-(use-package wgrep
-  :defer 5)
+(use-package wgrep :defer 5)
 ;; (require-package 'wgrep)
 ;; (require-package 'project-local-variables)
 ;; (require-package 'diminish)
@@ -61,7 +59,7 @@
 ;; (require 'init-isearch)
 (require 'init-uniquify)
 (require 'init-ibuffer)
-(require 'init-flymake)
+;; (require 'init-flymake)
 
 (require 'init-recentf)
 (require 'init-ido)
