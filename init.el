@@ -74,7 +74,7 @@
 (require 'init-editing-utils)
 (require 'init-greek)
 
-(require 'init-darcs)
+;; (require 'init-darcs)
 (require 'init-git)
 
 ;; (require 'init-crontab)

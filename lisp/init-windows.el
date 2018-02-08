@@ -14,7 +14,9 @@
   :ensure t
   :config
   (setq switch-window-shortcut-style 'alphabet)
-  :bind ("\C-xo" . switch-window))
+  :bind
+  (("\C-xo" . switch-window)
+   ("C-x 9" . switch-window-then-delete)))
 
 ;;----------------------------------------------------------------------------
 ;; When splitting window, show (other-buffer) in the new window
