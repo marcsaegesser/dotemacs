@@ -3,8 +3,9 @@
   :config
   (setq wg-emacs-exit-save-behavior           'save
         wg-workgroups-mode-exit-save-behavior 'save
-        wg-flag-modified t))
+        wg-flag-modified t)
+  (workgroups-mode t))
 
-(workgroups-mode t)
+
 
 (provide 'init-workgroups)
