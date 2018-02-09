@@ -95,7 +95,7 @@
 ;; (require 'init-rails)
 (require 'init-sql)
 (require 'init-scalamode2)
-(require 'init-ecb)
+;; (require 'init-ecb)
 ;; (require 'init-ocaml)
 
 (require 'init-paredit)
