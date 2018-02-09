@@ -10,39 +10,6 @@
   :commands highlight-symbol
   )
 
-(defun scala-ret-handler ()
-  (interactive)
-  (reindent-then-newline-and-indent)
-  (scala-indent:insert-asterisk-on-multiline-comment))
-
-(defcustom
-  scala-mode-prettify-symbols
-  '(("<=" . ?≤)
-    (">=" . ?≥)
-    ("==" . ?≡)
-    ("!" . ?¬)
-    ("!=" . ?≢)
-    ("&&" . ?∧)
-    ("||" . ?∨)
-    ("true" . ?⊤)
-    ("false" . ?⊥)
-    ("Int" . ?ℤ)
-    ("Boolean" . ?𝔹)
-    ("->" . ?→)
-    ("<-" . ?←)
-    ("=>" . ?⇒)
-    ("<=>" . ?⇔)
-    ("-->" . ?⟶)
-    ("<->" . ?↔)
-    ("<--" . ?⟵)
-    ("<-->" . ?⟷)
-    ("==>" . ?⟹)
-    ("<==" . ?⟸)
-    ("<==>" . ?⟺)
-    ("~>" . ?⇝)
-    ("<~" . ?⇜))
-  "Prettify rules for arrow related code pieces.")
-
 (use-package popup-imenu
   :ensure t
   :commands popup-imenu
@@ -71,7 +38,7 @@
 ;;   (sp-local-pair '(c-mode java-mode) "(" nil :post-handlers '(("||\n[i]" "RET")))
 ;;   (sp-local-pair '(c-mode java-mode) "{" nil :post-handlers '(("||\n[i]" "RET")))
 ;;   (sp-local-pair '(java-mode) "<" nil :post-handlers '(("||\n[i]" "RET")))
-
+;;; 
 ;;   ;; WORKAROUND https://github.com/Fuco1/smartparens/issues/543
 ;;   (bind-key "C-<left>" nil smartparens-mode-map)
 ;;   (bind-key "C-<right>" nil smartparens-mode-map)
@@ -90,6 +57,11 @@
 (use-package ensime
   :ensure t ;; This will use the non-stable version! See http://ensime.github.io/editors/emacs/install/
   :pin melpa-stable
+  :preface
+  (defun scala-ret-handler ()
+    (interactive)
+    (reindent-then-newline-and-indent)
+    (scala-indent:insert-asterisk-on-multiline-comment))
   :bind (
          :map ensime-mode-map
               ("RET" . scala-ret-handler) ;; Note to self: Why can't I use a lambda here?
@@ -115,17 +87,44 @@
   :pin melpa)
 
 (use-package scala-mode
-  :pin melpa)
+  :ensure t
+  :pin melpa
+  :preface
+  (defvar scala-prettify-symbols-alist
+    '(("<=" . ?≤)
+      (">=" . ?≥)
+      ("==" . ?≡)
+      ("!" . ?¬)
+      ("!=" . ?≢)
+      ("&&" . ?∧)
+      ("||" . ?∨)
+      ("true" . ?⊤)
+      ("false" . ?⊥)
+      ("Int" . ?ℤ)
+      ("Boolean" . ?𝔹)
+      ("->" . ?→)
+      ("<-" . ?←)
+      ("=>" . ?⇒)
+      ("<=>" . ?⇔)
+      ("-->" . ?⟶)
+      ("<->" . ?↔)
+      ("<--" . ?⟵)
+      ("<-->" . ?⟷)
+      ("==>" . ?⟹)
+      ("<==" . ?⟸)
+      ("<==>" . ?⟺)
+      ("~>" . ?⇝)
+      ("<~" . ?⇜)))
+  (defun my-scala-mode-hook ()
+    (setq prettify-symbols-alist scala-prettify-symbols-alist
+          indent-tabs-mode nil)
+    (rainbow-delimiters-mode t)
+    (electric-pair-mode t)
+    ;; (smartparens-strict-mode t)
+    (highlight-symbol-mode t)
+    (prettify-symbols-mode t))
+  :hook (scala-mode . my-scala-mode-hook)
+)
 
-(add-hook 'scala-mode-hook
-          (lambda ()
-            (setq prettify-symbols-alist scala-mode-prettify-symbols
-                  indent-tabs-mode nil)
-            (rainbow-delimiters-mode t)
-            (electric-pair-mode t)
-            ;; (smartparens-strict-mode t)
-            (highlight-symbol-mode t)
-            (prettify-symbols-mode t)
-            (git-gutter-mode t)))
 
 (provide 'init-scalamode2)
