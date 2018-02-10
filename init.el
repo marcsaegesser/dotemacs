@@ -1,15 +1,8 @@
-;;; This file bootstraps the configuration, which is divided into
-;;; a number of other files.
-
-;; (add-to-list 'load-path user-emacs-directory)
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
+;; (package-initialize)
 
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
+;; (add-to-list 'load-path user-emacs-directory)
+
 ;; (require 'init-benchmarking) ;; Measure startup time
 
 ;;----------------------------------------------------------------------------
@@ -33,7 +26,7 @@
 ;; Load configs for specific features and modes
 ;;----------------------------------------------------------------------------
 
-(require-package 'use-package)
+;; (require-package 'use-package)
 
 (eval-when-compile
   (require 'use-package))
@@ -122,14 +115,23 @@
 
 ;; Extra packages which don't require any configuration
 
-(require-package 'projectile)
-(setq projectile-globally-ignored-directories (append '(".ensime" ".ensime_cache" "target" "ami-server")))
-(projectile-mode)
+;; (require-package 'projectile)
+;; (setq projectile-globally-ignored-directories (append '(".ensime" ".ensime_cache" "target" "ami-server")))
+;; (projectile-mode)
+(use-package projectile
+  :ensure t
+  :diminish
+  :config
+  (setq projectile-globally-ignored-directories (append '(".ensime" ".ensime_cache" "target" "ami-server")))
+  (projectile-global-mode))
 
-(require-package 'gnuplot)
-(require-package 'lua-mode)
-(require-package 'htmlize)
-(require-package 'dsvn)
+;; (require-package 'gnuplot)
+(use-package lua-mode
+  :mode "\\.lua\\'"
+  :interpreter "lua")
+
+;; (require-package 'htmlize)
+;; (require-package 'dsvn)
 (when *is-a-mac*
   (require-package 'osx-location))
 (require-package 'regex-tool)
@@ -164,23 +166,23 @@
 ;;----------------------------------------------------------------------------
 ;; Locales (setting them earlier in this file doesn't work in X)
 ;;----------------------------------------------------------------------------
-(require 'init-locales)
+;; (require 'init-locales)
 
 ;;----------------------------------------------------------------------------
 ;; Make all the custom themes available
 ;;----------------------------------------------------------------------------
-(require 'dash)
-(require 's)
+(use-package dash :ensure t :defer)
+(use-package s    :ensure t :defer)
 
 (-each
-   (-map
-      (lambda (item)
-      (format "~/.emacs.d/elpa/%s" item))
-   (-filter
+    (-map
+     (lambda (item)
+       (format "~/.emacs.d/elpa/%s" item))
+     (-filter
       (lambda (item) (s-contains? "theme" item))
       (directory-files "~/.emacs.d/elpa/")))
-   (lambda (item)
-      (add-to-list 'custom-theme-load-path item)))
+  (lambda (item)
+    (add-to-list 'custom-theme-load-path item)))
 
 ;; Local Variables:
 ;; coding: utf-8
