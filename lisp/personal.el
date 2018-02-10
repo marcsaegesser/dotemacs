@@ -1,3 +1,26 @@
+(defcustom user-initials nil
+  "*Initials of this user."
+  :set
+  #'(lambda (symbol value)
+      (if (fboundp 'font-lock-add-keywords)
+          (mapc
+           #'(lambda (mode)
+               (font-lock-add-keywords
+                mode (list (list (concat "\\<\\(" value " [^:\n]+\\):")
+                                 1 font-lock-warning-face t))))
+           '(c-mode emacs-lisp-mode lisp-mode
+                    python-mode perl-mode java-mode groovy-mode
+                    haskell-mode literate-haskell-mode)))
+      (set symbol value))
+  :type 'string
+  :group 'mail)
+
+(defun insert-user-timestamp ()
+  "Insert a quick timestamp using the value of `user-initials'."
+  (interactive)
+  (insert (format "%s (%s): " user-initials
+                  (format-time-string "%Y-%m-%d" (current-time)))))
+
 (defun sanityinc/open-line-with-reindent (n)
   "A version of `open-line' which reindents the start and end positions.
 If there is a fill prefix and/or a `left-margin', insert them

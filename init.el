@@ -127,7 +127,7 @@
   :ensure t
   :bind (("C-c o" . crux-open-with)
          ("M-o" . crux-smart-open-line)
-         ("C-c n" . crux-cleanup-buffer-or-region)
+         ;; ("C-c n" . crux-cleanup-buffer-or-region)
          ("C-c f" . crux-recentf-ido-find-file)
          ("C-M-z" . crux-indent-defun)
          ("C-c u" . crux-view-url)
@@ -579,6 +579,7 @@
   :hook (prog-mode . paredit-everywhere-mode))
 
 (use-package personal
+  :bind (("C-c n"   . insert-user-timestamp))
   :config
   (global-set-key [remap open-line] 'sanityinc/open-line-with-reindent)
 )
@@ -702,13 +703,16 @@
     ;; (smartparens-strict-mode t)
     (highlight-symbol-mode t)
     (prettify-symbols-mode t))
-  :hook (scala-mode . my-scala-mode-hook)
-)
+  :hook (scala-mode . my-scala-mode-hook))
+
+(use-package server
+  :unless noninteractive
+  :no-require
+  :hook (after-init . server-start))
 
 (use-package smex
   :ensure t
-  :bind ("M-x" . 'smex)
-  )
+  :bind ("M-x" . 'smex))
 
 (use-package smooth-scroll
   :ensure t
@@ -836,9 +840,9 @@
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient
 ;;----------------------------------------------------------------------------
-(require 'server)
-(unless (server-running-p)
-  (server-start))
+;; (require 'server)
+;; (unless (server-running-p)
+;;   (server-start))
 
 
 ;;----------------------------------------------------------------------------
