@@ -1,8 +1,12 @@
+;;; The structure of this file is based heavily on John Wiegley's
+;;; init.el (https://github.com/jwiegley/dot-emacs)
 (require 'package)
 (package-initialize)
 
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
 ;; (add-to-list 'load-path user-emacs-directory)
+
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
 ;; Platform detection
 (defconst *spell-check-support-enabled* nil)
@@ -16,25 +20,36 @@
 (require 'init-site-lisp) ;; Must come before elpa, as it may provide package.el
 (require 'init-elpa)      ;; Machinery for installing required packages
 
-(eval-when-compile
-  (require 'use-package))
+;; (eval-when-compile
+;;   (require 'use-package))
+(eval-and-compile
+  (require 'use-package)
+
+  (if init-file-debug
+      (setq use-package-verbose t
+            use-package-expand-minimally nil
+            use-package-compute-statistics t
+            debug-on-error t)
+    (setq use-package-verbose nil
+          use-package-expand-minimally t)))
 
 ;; Preferences
 (fringe-mode 4)
 
-(setq use-file-dialog nil)
-(setq use-dialog-box nil)
-(setq inhibit-startup-screen t)
-(setq inhibit-startup-echo-area-message t)
-(setq initial-scratch-message "")
-(setq scroll-bar-mode 0)
-(setq indicate-empty-lines t)
-
-(setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "google-chrome")
+(setq
+ blink-cursor-delay 0
+ browse-url-browser-function 'browse-url-generic
+ browse-url-generic-program "google-chrome" 
+ use-file-dialog nil
+ use-dialog-box nil
+ indicate-empty-lines t
+ inhibit-startup-screen t
+ inhibit-startup-echo-area-message t
+ initial-scratch-message ""
+ scroll-bar-mode 0
+)
 
 (setq-default
- blink-cursor-delay 0
  bookmark-default-file (expand-file-name ".bookmarks.el" user-emacs-directory)
  buffers-menu-max-size 30
  case-fold-search t
@@ -146,6 +161,7 @@
          ("s-k" . crux-kill-whole-line)
          ("C-<backspace>" . crux-kill-line-backwards)
          ("s-o" . crux-smart-open-line-above)
+         ([remap open-line] . crux-smart-open-line-above)
          ([remap move-beginning-of-line] . crux-move-beginning-of-line)
          ([(shift return)] . crux-smart-open-line)
          ([(control shift return)] . crux-smart-open-line-above)
@@ -553,7 +569,7 @@
 
 (use-package paredit
   :ensure t
-  :diminish
+  ;; :diminish
   :hook ((lisp-mode emacs-lisp-mode) . paredit-mode)
   :bind (:map paredit-mode-map
               ("[")
@@ -579,9 +595,10 @@
   :hook (prog-mode . paredit-everywhere-mode))
 
 (use-package personal
-  :bind (("C-c n"   . insert-user-timestamp))
-  :config
-  (global-set-key [remap open-line] 'sanityinc/open-line-with-reindent)
+  :defer t
+  ;; :bind (("C-c n"   . insert-user-timestamp))
+  ;; :config
+  ;; (global-set-key [remap open-line] 'sanityinc/open-line-with-reindent)
 )
 
 (use-package php-mode
@@ -774,10 +791,11 @@
 (use-package workgroups2
   :ensure t
   :config
-  (setq wg-emacs-exit-save-behavior           'save
+  (setq ;;wg-emacs-exit-save-behavior           'save
         wg-workgroups-mode-exit-save-behavior 'save
         wg-flag-modified t)
-  (workgroups-mode t))
+  (workgroups-mode t)
+  )
 
 ;;(require 'init-gui-frames)
 ;; (require 'init-dired)
