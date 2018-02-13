@@ -161,7 +161,6 @@
          ("s-k" . crux-kill-whole-line)
          ("C-<backspace>" . crux-kill-line-backwards)
          ("s-o" . crux-smart-open-line-above)
-         ([remap open-line] . crux-smart-open-line-above)
          ([remap move-beginning-of-line] . crux-move-beginning-of-line)
          ([(shift return)] . crux-smart-open-line)
          ([(control shift return)] . crux-smart-open-line-above)
@@ -177,11 +176,6 @@
   :diminish
   :config
   (default-text-scale-mode t))
-
-(use-package dired+
-  :ensure t
-  :config (setq dired-recursive-deletes 'top)
-  )
 
 (use-package dired-sidebar
   :ensure t
@@ -596,9 +590,7 @@
 
 (use-package personal
   :defer t
-  ;; :bind (("C-c n"   . insert-user-timestamp))
-  ;; :config
-  ;; (global-set-key [remap open-line] 'sanityinc/open-line-with-reindent)
+  :bind (([remap open-line] . sanityinc/open-line-with-reindent))
 )
 
 (use-package php-mode
