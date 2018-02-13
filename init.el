@@ -23,7 +23,7 @@
 ;; (eval-when-compile
 ;;   (require 'use-package))
 (eval-and-compile
-  (require 'use-package)
+  (require-package 'use-package)
 
   (if init-file-debug
       (setq use-package-verbose t
@@ -118,7 +118,7 @@
 ;; Load packages
 
 (use-package dash          :ensure t :defer)
-(use-package diminish      :demand t)
+(use-package diminish      :ensure t :demand t)
 (use-package fringe-helper :ensure t :defer t)
 (use-package s             :ensure t :defer)
 
