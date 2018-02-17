@@ -83,6 +83,7 @@
 
 (blink-cursor-mode 0)
 
+(tool-bar-mode 0)
 (menu-bar-mode -1)
 (global-set-key [f9] 'toggle-menu-bar-mode-from-frame)
 
@@ -137,6 +138,14 @@
   :ensure t
   :bind (("M-z" . avy-zap-to-char-dwim)
          ("M-Z" . avy-zap-up-to-char-dwim)))
+
+(use-package browse-kill-ring
+  :ensure t
+  :defer 5
+  :commands browse-kill-ring)
+
+(use-package color-theme-sanityinc-tomorrow  :ensure t)
+(use-package color-theme-sanityinc-solarized :ensure t)
 
 (use-package crux
   :ensure t
@@ -555,6 +564,10 @@
   :ensure t
   :hook (org-mode . org-bullets-mode))
 
+(use-package origami
+  :ensure t
+  :commands origami-mode)
+
 (use-package page-break-lines
   :ensure t
   :diminish
@@ -647,7 +660,13 @@
 
   (add-hook 'python-mode-hook 'my-python-mode-hook))
 
-(use-package rainbow-delimiters :ensure t)
+(use-package rainbow-delimiters
+  :ensure t
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package rainbow-mode
+  :ensure t
+  :commands rainbow-mode)
 
 (use-package recentf
   :defer 10
@@ -719,6 +738,23 @@
   :no-require
   :hook (after-init . server-start))
 
+(use-package smart-mode-line
+  :ensure t
+  :defer 10
+  :config
+  ;; See https://github.com/Malabarba/smart-mode-line/issues/217
+  (setq mode-line-format (delq 'mode-line-position mode-line-format))
+  (sml/setup)
+  (sml/apply-theme 'respectful)
+  (remove-hook 'display-time-hook 'sml/propertize-time-string))
+
+(use-package smart-mode-line-powerline-theme
+  :ensure t
+  :disabled t
+  :after smart-mode-line
+  :config
+  (sml/apply-theme 'light-powerline))
+
 (use-package smex
   :ensure t
   :bind ("M-x" . 'smex))
@@ -739,7 +775,7 @@
   :config
   (setq switch-window-shortcut-style 'alphabet)
   :bind
-  (("\C-xo" . switch-window)
+  (("C-x o" . switch-window)
    ("C-x 9" . switch-window-then-delete)))
 
 (use-package tidy
@@ -787,6 +823,12 @@
         wg-workgroups-mode-exit-save-behavior 'save
         wg-flag-modified t)
   (workgroups-mode t)
+  )
+
+(use-package zenburn-theme
+  :ensure t
+  :config
+  (load-theme 'zenburn t)
   )
 
 ;;(require 'init-gui-frames)
@@ -878,15 +920,15 @@
 ;; Make all the custom themes available
 ;;----------------------------------------------------------------------------
 
-;; (-each
-;;     (-map
-;;      (lambda (item)
-;;        (format "~/.emacs.d/elpa/%s" item))
-;;      (-filter
-;;       (lambda (item) (s-contains? "theme" item))
-;;       (directory-files "~/.emacs.d/elpa/")))
-;;   (lambda (item)
-;;     (add-to-list 'custom-theme-load-path item)))
+(-each
+    (-map
+     (lambda (item)
+       (format "~/.emacs.d/elpa/%s" item))
+     (-filter
+      (lambda (item) (s-contains? "theme" item))
+      (directory-files "~/.emacs.d/elpa/")))
+  (lambda (item)
+    (add-to-list 'custom-theme-load-path item)))
 
 ;; Local Variables:
 ;; coding: utf-8
