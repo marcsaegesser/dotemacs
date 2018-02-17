@@ -147,6 +147,78 @@
 (use-package color-theme-sanityinc-tomorrow  :ensure t)
 (use-package color-theme-sanityinc-solarized :ensure t)
 
+;; (use-package company
+;;   :ensure t
+;;   :defer 5
+;;   :diminish
+;;   :commands (company-mode company-indent-or-complete-common)
+;;   :init
+;;   (dolist (hook '(emacs-lisp-mode-hook
+;;                   haskell-mode-hook
+;;                   c-mode-common-hook))
+;;     (add-hook hook
+;;               #'(lambda ()
+;;                   (local-set-key (kbd "<tab>")
+;;                                  #'company-indent-or-complete-common))))
+;;   :config
+;;   ;; From https://github.com/company-mode/company-mode/issues/87
+;;   ;; See also https://github.com/company-mode/company-mode/issues/123
+;;   (defadvice company-pseudo-tooltip-unless-just-one-frontend
+;;       (around only-show-tooltip-when-invoked activate)
+;;     (when (company-explicit-action-p)
+;;       ad-do-it))
+
+;;   ;; See http://oremacs.com/2017/12/27/company-numbers/
+;;   (defun ora-company-number ()
+;;     "Forward to `company-complete-number'.
+;;   Unless the number is potentially part of the candidate.
+;;   In that case, insert the number."
+;;     (interactive)
+;;     (let* ((k (this-command-keys))
+;;            (re (concat "^" company-prefix k)))
+;;       (if (cl-find-if (lambda (s) (string-match re s))
+;;                       company-candidates)
+;;           (self-insert-command 1)
+;;         (company-complete-number (string-to-number k)))))
+
+;;   (let ((map company-active-map))
+;;     (mapc
+;;      (lambda (x)
+;;        (define-key map (format "%d" x) 'ora-company-number))
+;;      (number-sequence 0 9))
+;;     (define-key map " " (lambda ()
+;;                           (interactive)
+;;                           (company-abort)
+;;                           (self-insert-command 1))))
+
+;;   (defun check-expansion ()
+;;     (save-excursion
+;;       (if (outline-on-heading-p t)
+;;           nil
+;;         (if (looking-at "\\_>") t
+;;           (backward-char 1)
+;;           (if (looking-at "\\.") t
+;;             (backward-char 1)
+;;             (if (looking-at "->") t nil))))))
+
+;;   (define-key company-mode-map [tab]
+;;     '(menu-item "maybe-company-expand" nil
+;;                 :filter (lambda (&optional _)
+;;                           (when (check-expansion)
+;;                             #'company-complete-common))))
+
+;;   (eval-after-load "yasnippet"
+;;     '(progn
+;;        (defun company-mode/backend-with-yas (backend)
+;;          (if (and (listp backend) (member 'company-yasnippet backend))
+;;              backend
+;;            (append (if (consp backend) backend (list backend))
+;;                    '(:with company-yasnippet))))
+;;        (setq company-backends
+;;              (mapcar #'company-mode/backend-with-yas company-backends))))
+
+;;   (global-company-mode 1))
+
 (use-package crux
   :ensure t
   :bind (("C-c o" . crux-open-with)
@@ -275,6 +347,7 @@
 
 (use-package git-gutter
   :ensure t
+  :diminish
   :custom
   (git-gutter:update-interval 2))
 
@@ -920,15 +993,15 @@
 ;; Make all the custom themes available
 ;;----------------------------------------------------------------------------
 
-(-each
-    (-map
-     (lambda (item)
-       (format "~/.emacs.d/elpa/%s" item))
-     (-filter
-      (lambda (item) (s-contains? "theme" item))
-      (directory-files "~/.emacs.d/elpa/")))
-  (lambda (item)
-    (add-to-list 'custom-theme-load-path item)))
+;; (-each
+;;     (-map
+;;      (lambda (item)
+;;        (format "~/.emacs.d/elpa/%s" item))
+;;      (-filter
+;;       (lambda (item) (s-contains? "theme" item))
+;;       (directory-files "~/.emacs.d/elpa/")))
+;;   (lambda (item)
+;;     (add-to-list 'custom-theme-load-path item)))
 
 ;; Local Variables:
 ;; coding: utf-8
