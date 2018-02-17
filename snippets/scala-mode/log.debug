@@ -1,0 +1,5 @@
+# Author: Marc Saegesser <marc@saegesser.org>
+# name: debug logging
+# key: logd
+# --
+logger.debug(s"${0:message}")

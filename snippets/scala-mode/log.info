@@ -1,0 +1,5 @@
+# Author: Marc Saegesser <marc@saegesser.org>
+# name: info logging
+# key: logi
+# --
+logger.info(s"${0:message}")

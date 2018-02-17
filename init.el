@@ -46,7 +46,7 @@
  inhibit-startup-screen t
  inhibit-startup-echo-area-message t
  initial-scratch-message ""
- scroll-bar-mode 0
+ window-combintaion-resize t
 )
 
 (setq-default
@@ -66,6 +66,7 @@
  next-screen-context-lines 2
  save-interprogram-paste-before-kill t
  set-mark-command-repeat-pop t
+ scroll-bar-mode 0
  scroll-margin 0
  scroll-conservatively 10
  show-trailing-whitespace t
@@ -124,7 +125,7 @@
 (use-package s             :ensure t :defer)
 
 
-(require 'init-auto-complete)  ;; this still needs work
+;; (require 'init-auto-complete)  ;; this still needs work
 
 (use-package avy
   :ensure t
@@ -147,77 +148,77 @@
 (use-package color-theme-sanityinc-tomorrow  :ensure t)
 (use-package color-theme-sanityinc-solarized :ensure t)
 
-;; (use-package company
-;;   :ensure t
-;;   :defer 5
-;;   :diminish
-;;   :commands (company-mode company-indent-or-complete-common)
-;;   :init
-;;   (dolist (hook '(emacs-lisp-mode-hook
-;;                   haskell-mode-hook
-;;                   c-mode-common-hook))
-;;     (add-hook hook
-;;               #'(lambda ()
-;;                   (local-set-key (kbd "<tab>")
-;;                                  #'company-indent-or-complete-common))))
-;;   :config
-;;   ;; From https://github.com/company-mode/company-mode/issues/87
-;;   ;; See also https://github.com/company-mode/company-mode/issues/123
-;;   (defadvice company-pseudo-tooltip-unless-just-one-frontend
-;;       (around only-show-tooltip-when-invoked activate)
-;;     (when (company-explicit-action-p)
-;;       ad-do-it))
+(use-package company
+  :ensure t
+  :defer 5
+  :diminish
+  :commands (company-mode company-indent-or-complete-common)
+  :init
+  (dolist (hook '(emacs-lisp-mode-hook
+                  haskell-mode-hook
+                  c-mode-common-hook))
+    (add-hook hook
+              #'(lambda ()
+                  (local-set-key (kbd "<tab>")
+                                 #'company-indent-or-complete-common))))
+  :config
+  ;; From https://github.com/company-mode/company-mode/issues/87
+  ;; See also https://github.com/company-mode/company-mode/issues/123
+  (defadvice company-pseudo-tooltip-unless-just-one-frontend
+      (around only-show-tooltip-when-invoked activate)
+    (when (company-explicit-action-p)
+      ad-do-it))
 
-;;   ;; See http://oremacs.com/2017/12/27/company-numbers/
-;;   (defun ora-company-number ()
-;;     "Forward to `company-complete-number'.
-;;   Unless the number is potentially part of the candidate.
-;;   In that case, insert the number."
-;;     (interactive)
-;;     (let* ((k (this-command-keys))
-;;            (re (concat "^" company-prefix k)))
-;;       (if (cl-find-if (lambda (s) (string-match re s))
-;;                       company-candidates)
-;;           (self-insert-command 1)
-;;         (company-complete-number (string-to-number k)))))
+  ;; See http://oremacs.com/2017/12/27/company-numbers/
+  (defun ora-company-number ()
+    "Forward to `company-complete-number'.
+  Unless the number is potentially part of the candidate.
+  In that case, insert the number."
+    (interactive)
+    (let* ((k (this-command-keys))
+           (re (concat "^" company-prefix k)))
+      (if (cl-find-if (lambda (s) (string-match re s))
+                      company-candidates)
+          (self-insert-command 1)
+        (company-complete-number (string-to-number k)))))
 
-;;   (let ((map company-active-map))
-;;     (mapc
-;;      (lambda (x)
-;;        (define-key map (format "%d" x) 'ora-company-number))
-;;      (number-sequence 0 9))
-;;     (define-key map " " (lambda ()
-;;                           (interactive)
-;;                           (company-abort)
-;;                           (self-insert-command 1))))
+  (let ((map company-active-map))
+    (mapc
+     (lambda (x)
+       (define-key map (format "%d" x) 'ora-company-number))
+     (number-sequence 0 9))
+    (define-key map " " (lambda ()
+                          (interactive)
+                          (company-abort)
+                          (self-insert-command 1))))
 
-;;   (defun check-expansion ()
-;;     (save-excursion
-;;       (if (outline-on-heading-p t)
-;;           nil
-;;         (if (looking-at "\\_>") t
-;;           (backward-char 1)
-;;           (if (looking-at "\\.") t
-;;             (backward-char 1)
-;;             (if (looking-at "->") t nil))))))
+  (defun check-expansion ()
+    (save-excursion
+      (if (outline-on-heading-p t)
+          nil
+        (if (looking-at "\\_>") t
+          (backward-char 1)
+          (if (looking-at "\\.") t
+            (backward-char 1)
+            (if (looking-at "->") t nil))))))
 
-;;   (define-key company-mode-map [tab]
-;;     '(menu-item "maybe-company-expand" nil
-;;                 :filter (lambda (&optional _)
-;;                           (when (check-expansion)
-;;                             #'company-complete-common))))
+  (define-key company-mode-map [tab]
+    '(menu-item "maybe-company-expand" nil
+                :filter (lambda (&optional _)
+                          (when (check-expansion)
+                            #'company-complete-common))))
 
-;;   (eval-after-load "yasnippet"
-;;     '(progn
-;;        (defun company-mode/backend-with-yas (backend)
-;;          (if (and (listp backend) (member 'company-yasnippet backend))
-;;              backend
-;;            (append (if (consp backend) backend (list backend))
-;;                    '(:with company-yasnippet))))
-;;        (setq company-backends
-;;              (mapcar #'company-mode/backend-with-yas company-backends))))
+  (eval-after-load "yasnippet"
+    '(progn
+       (defun company-mode/backend-with-yas (backend)
+         (if (and (listp backend) (member 'company-yasnippet backend))
+             backend
+           (append (if (consp backend) backend (list backend))
+                   '(:with company-yasnippet))))
+       (setq company-backends
+             (mapcar #'company-mode/backend-with-yas company-backends))))
 
-;;   (global-company-mode 1))
+  (global-company-mode 1))
 
 (use-package crux
   :ensure t
@@ -849,7 +850,7 @@
 (use-package smooth-scroll
   :ensure t
   :bind
-  (("C-u" . scroll-down)
+  (("C-u"   . scroll-down)
    ("C-M-n" . scroll-up-1)
    ("C-M-p" . scroll-down-1)))
 
@@ -906,11 +907,34 @@
 (use-package workgroups2
   :ensure t
   :config
-  (setq ;;wg-emacs-exit-save-behavior           'save
-        wg-workgroups-mode-exit-save-behavior 'save
+  (setq wg-emacs-exit-save-behavior 'save
         wg-flag-modified t)
-  (workgroups-mode t)
+  ;; (workgroups-mode 0)
   )
+
+(use-package yasnippet
+  :ensure t
+  :after prog-mode
+  :defer 10
+  :diminish yas-minor-mode
+  :bind (("C-c y d"   . yas-load-directory)
+         ("C-c y i"   . yas-insert-snippet)
+         ("C-c y f"   . yas-visit-snippet-file)
+         ("C-c y n"   . yas-new-snippet)
+         ("C-c y t"   . yas-tryout-snippet)
+         ("C-c y l"   . yas-describe-tables)
+         ("C-c y g"   . yas/global-mode)
+         ("C-c y m"   . yas/minor-mode)
+         ("C-c y a"   . yas-reload-all)
+         ("C-c y TAB" . yas-expand)
+         ("C-c y x"   . yas-expand))
+  :bind (:map yas-keymap
+              ("C-i" . yas-next-field-or-maybe-expand))
+  :mode ("/\\.emacs\\.d/snippets/" . snippet-mode)
+  :config
+  (setq yas-snippet-dirs (append yas-snippet-dirs
+                                 '("~/Downloads/interesting-snippets")))
+  (yas-global-mode 1))
 
 (use-package zenburn-theme
   :ensure t
