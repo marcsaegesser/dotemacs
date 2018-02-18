@@ -920,7 +920,7 @@
   :disabled t
   :after smart-mode-line
   :config
-  (sml/apply-theme 'light-powerline))
+  (sml/apply-theme 'powerline))
 
 (use-package smex
   :ensure t
@@ -1042,71 +1042,6 @@
   :ensure t
   :bind ("C-x 1" . zygospore-toggle-delete-other-windows))
 
-;;(require 'init-gui-frames)
-;; (require 'init-dired)
-;; (require 'init-uniquify)
-;; (require 'init-ibuffer)
-
-;; (require 'init-recentf)
-;; (require 'init-ido)
-;; (require 'init-windows)
-
-;; (require 'init-fonts)
-;; (require 'init-mmm)
-
-;; (require 'init-editing-utils)
-;; (require 'init-greek)
-
-;; (require 'init-git)
-
-;; (require 'init-markdown)
-;; (require 'init-javascript)
-;; (require 'init-sh)
-;; (require 'init-php)
-;; (require 'init-org)
-;; (require 'init-nxml)
-;; (require 'init-css)
-;; (require 'init-python-mode)
-;; (require 'init-haskell)
-;; (require 'init-sql)
-;; (require 'init-scalamode2)
-
-;; (require 'init-paredit)
-;; (require 'init-lisp)
-;; (require 'init-ansi-term)
-
-
-;; (when *spell-check-support-enabled*
-;;   (require 'init-spelling))
-
-;; (require 'init-marmalade)
-;; (require 'init-workgroups)
-
-;; (require 'init-crux)
-
-;; (require 'init-xiki)
-
-;; Extra packages which don't require any configuration
-
-;; (require-package 'projectile)
-;; (setq projectile-globally-ignored-directories (append '(".ensime" ".ensime_cache" "target" "ami-server")))
-;; (projectile-mode)
-;; (require-package 'gnuplot)
-
-;; (require-package 'htmlize)
-;; (require-package 'dsvn)
-;; (when *is-a-mac*
-;;   (require-package 'osx-location))
-;; (require-package 'regex-tool)
-
-
-;;----------------------------------------------------------------------------
-;; Allow access from emacsclient
-;;----------------------------------------------------------------------------
-;; (require 'server)
-;; (unless (server-running-p)
-;;   (server-start))
-
 
 ;;----------------------------------------------------------------------------
 ;; Variables configured via the interactive 'customize' interface
@@ -1115,33 +1050,3 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
-
-;;----------------------------------------------------------------------------
-;; Allow users to provide an optional "init-local" containing personal settings
-;;----------------------------------------------------------------------------
-;; (require 'init-local nil t)
-
-
-;;----------------------------------------------------------------------------
-;; Locales (setting them earlier in this file doesn't work in X)
-;;----------------------------------------------------------------------------
-;; (require 'init-locales)
-
-;;----------------------------------------------------------------------------
-;; Make all the custom themes available
-;;----------------------------------------------------------------------------
-
-;; (-each
-;;     (-map
-;;      (lambda (item)
-;;        (format "~/.emacs.d/elpa/%s" item))
-;;      (-filter
-;;       (lambda (item) (s-contains? "theme" item))
-;;       (directory-files "~/.emacs.d/elpa/")))
-;;   (lambda (item)
-;;     (add-to-list 'custom-theme-load-path item)))
-
-;; Local Variables:
-;; coding: utf-8
-;; no-byte-compile: t
-;; End:
