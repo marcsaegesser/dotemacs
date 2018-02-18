@@ -1,4 +1,5 @@
 Emacs Configuration
 ======================
 
-This was originall based on Steve Purcell's configuration.
+My current Emacs configuration. The orginization based in large part
+on John Wiegley's configuration.
