@@ -78,6 +78,7 @@
  )
 
 ;; Change this. mas 2/10/2018
+(cua-mode 0)
 (cua-selection-mode t) ; for rectangles, CUA is nice
 
 (setq x-select-enable-clipboard t)
@@ -854,6 +855,15 @@
    ("C-M-n" . scroll-up-1)
    ("C-M-p" . scroll-down-1)))
 
+(use-package smooth-scrolling
+  :ensure t
+  :disabled
+  :bind ("C-u" . scroll-down)
+  :custom
+  (smooth-scroll-margin 2)
+  :config
+  (smooth-scrolling-mode 1))
+
 (use-package sql-indent
   :ensure t
   :commands sqlind-minor-mode)
@@ -911,6 +921,10 @@
         wg-flag-modified t)
   ;; (workgroups-mode 0)
   )
+
+(use-package yaml-mode
+  :ensure t
+  :mode "\\.ya?ml\\'")
 
 (use-package yasnippet
   :ensure t
