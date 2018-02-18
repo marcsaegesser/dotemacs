@@ -221,6 +221,19 @@
 
   (global-company-mode 1))
 
+(use-package company-elisp
+  :after company
+  :config
+  (push 'company-elisp company-backends))
+
+(setq-local company-backend '(company-elisp))
+
+(use-package company-ghc
+  :ensure t
+  :after (company ghc)
+  :config
+  (push 'company-ghc company-backends))
+
 (use-package crux
   :ensure t
   :bind (;;("C-c o" . crux-open-with)
@@ -254,6 +267,13 @@
 (use-package css-mode
   :ensure t
   :mode "\\.css\\'")
+
+(use-package cursor-chg
+  :ensure t
+  :commands change-cursor-mode
+  :config
+  (change-cursor-mode 1)
+  (toggle-cursor-type-when-idle 1))
 
 (use-package default-text-scale
   :ensure t
@@ -473,6 +493,13 @@
   :commands highlight-symbol
   )
 
+(use-package hl-line
+  :commands hl-line-mode
+  :bind ("M-o h" . hl-line-mode))
+
+;; (use-package hl-line+
+;;   :after hl-line)
+
 (use-package ibuffer
   :bind ("C-x C-b" . ibuffer)
   :init
@@ -564,6 +591,7 @@
 (use-package magit
   :ensure t
   :bind ("M-<f12>" . 'magit-status)
+  :hook (magit-mode . hl-line-mode)
   :config
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   )
