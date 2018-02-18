@@ -611,6 +611,10 @@
         (list (concat "https://github.com/dmarcotte/github-markdown-preview/"
                       "blob/master/data/css/github.css"))))
 
+(use-package memory-usage
+  :ensure t
+  :commands memory-usage)
+
 (use-package mic-paren
   :ensure t
   :defer 5
@@ -636,6 +640,37 @@
    ("C-c c c" . mc/edit-lines)
    ("C-c c e" . mc/edit-ends-of-lines)
    ("C-c c a" . mc/edit-beginnings-of-lines)))
+
+(use-package multi-term
+  :ensure t
+  :bind (("C-c t" . multi-term-next)
+         ("C-c T" . multi-term))
+  :init
+  (defun screen ()
+    (interactive)
+    (let (term-buffer)
+      ;; Set buffer.
+      (setq term-buffer
+            (let ((multi-term-program (executable-find "screen"))
+                  (multi-term-program-switches "-DR"))
+              (multi-term-get-buffer)))
+      (set-buffer term-buffer)
+      (multi-term-internal)
+      (switch-to-buffer term-buffer)))
+
+  :config
+  (require 'term)
+
+  (defalias 'my-term-send-raw-at-prompt 'term-send-raw)
+
+  (defun my-term-end-of-buffer ()
+    (interactive)
+    (call-interactively #'end-of-buffer)
+    (if (and (eobp) (bolp))
+        (delete-char -1)))
+
+  (defadvice term-process-pager (after term-process-rebind-keys activate)
+    (define-key term-pager-break-map  "\177" 'term-pager-back-page)))
 
 (use-package nxml-mode
   :commands nxml-mode
@@ -697,9 +732,9 @@
   :hook ((lisp-mode emacs-lisp-mode) . paredit-mode)
   :bind (:map paredit-mode-map
               ("[")
-              ("M-k"   . paredit-raise-sexp)
-              ("M-I"   . paredit-splice-sexp)
-              ("C-M-l" . paredit-recentre-on-sexp)
+              ("M-k"       . paredit-raise-sexp)
+              ("M-I"       . paredit-splice-sexp)
+              ("C-M-l"     . paredit-recentre-on-sexp)
               ("C-c ( n"   . paredit-add-to-next-list)
               ("C-c ( p"   . paredit-add-to-previous-list)
               ("C-c ( j"   . paredit-join-with-next-list)
@@ -850,6 +885,21 @@
     (prettify-symbols-mode t))
   :hook (scala-mode . my-scala-mode-hook))
 
+(use-package selected
+  :ensure t
+  :defer 5
+  :diminish selected-minor-mode
+  :bind (:map selected-keymap
+              ("[" . align-code)
+              ("f" . fill-region)
+              ("U" . unfill-region)
+              ("d" . downcase-region)
+              ("u" . upcase-region)
+              ("r" . reverse-region)
+              ("s" . sort-lines))
+  :config
+  (selected-global-mode 1))
+
 (use-package server
   :unless noninteractive
   :no-require
@@ -926,6 +976,10 @@
   (setq uniquify-separator " • ")
   (setq uniquify-after-kill-buffer-p t)
   (setq uniquify-ignore-buffers-re "^\\*"))
+
+(use-package vline
+  :ensure t
+  :commands vline-mode)
 
 (use-package volatile-highlights
   :ensure t
