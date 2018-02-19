@@ -3,7 +3,8 @@
 (require 'package)
 (package-initialize)
 
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+;; (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
 ;; (add-to-list 'load-path user-emacs-directory)
 
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
@@ -33,66 +34,43 @@
     (setq use-package-verbose nil
           use-package-expand-minimally t)))
 
-;; Preferences
-(fringe-mode 4)
 
-(setq
+;; Preferences
+(setq-default
  blink-cursor-delay 0
- browse-url-browser-function 'browse-url-generic
+  browse-url-browser-function 'browse-url-generic
  browse-url-generic-program "google-chrome" 
- use-file-dialog nil
- use-dialog-box nil
- indicate-empty-lines t
+ indent-tabs-mode nil
  inhibit-startup-screen t
  inhibit-startup-echo-area-message t
  initial-scratch-message ""
- window-combintaion-resize t
-)
-
-(setq-default
- bookmark-default-file (expand-file-name ".bookmarks.el" user-emacs-directory)
- buffers-menu-max-size 30
- case-fold-search t
- column-number-mode t
- compilation-scroll-output t
- delete-selection-mode t
- ediff-split-window-function 'split-window-horizontally
- ediff-window-setup-function 'ediff-setup-windows-plain
- grep-highlight-matches t
- grep-scroll-output t
- indent-tabs-mode nil
  make-backup-files nil
  mouse-yank-at-point t
  next-screen-context-lines 2
  save-interprogram-paste-before-kill t
  set-mark-command-repeat-pop t
- scroll-bar-mode 0
- scroll-margin 0
- scroll-conservatively 10
  show-trailing-whitespace t
- term-scroll-to-bottom-on-output 'this
  tooltip-delay 1.5
  truncate-lines t
  truncate-partial-width-windows nil
+ use-file-dialog nil
+ use-dialog-box nil
  visible-bell nil
- )
-
-;; Change this. mas 2/10/2018
-(cua-mode 0)
-(cua-selection-mode t) ; for rectangles, CUA is nice
-
-(setq x-select-enable-clipboard t)
+ window-combintaion-resize t
+ x-select-enable-clipboard t
+)
 
 (blink-cursor-mode 0)
-
-(tool-bar-mode 0)
+(cua-mode 0)
+(cua-selection-mode t) ; for rectangles, CUA is nice
+(fringe-mode 4)
 (menu-bar-mode -1)
-(global-set-key [f9] 'toggle-menu-bar-mode-from-frame)
+(tool-bar-mode 0)
+(transient-mark-mode t)
 
 (when (fboundp 'electric-pair-mode)
   (setq-default electric-pair-mode 1))
 
-(transient-mark-mode t)
 
 (global-set-key (kbd "RET") 'newline-and-indent)
 
@@ -112,6 +90,8 @@
 (global-set-key (kbd "C-M-S-n") 'next-multiframe-window)
 (global-set-key (kbd "C-M-S-p") 'previous-multiframe-window)
 
+(global-set-key [f9] 'toggle-menu-bar-mode-from-frame)
+
 ;; Move this someplace better? mas 2/10/2018
 ;; But don't show trailing whitespace in SQLi, inf-ruby etc.
 (dolist (hook '(term-mode-hook comint-mode-hook compilation-mode-hook))
@@ -125,8 +105,6 @@
 (use-package fringe-helper :ensure t :defer t)
 (use-package s             :ensure t :defer)
 
-
-;; (require 'init-auto-complete)  ;; this still needs work
 
 (use-package avy
   :ensure t
@@ -234,6 +212,12 @@
   :config
   (push 'company-ghc company-backends))
 
+(use-package compile
+  :no-require
+  :custom
+  (compilation-scroll-output 'first-error)
+  )
+
 (use-package crux
   :ensure t
   :bind (;;("C-c o" . crux-open-with)
@@ -280,6 +264,11 @@
   :diminish
   :config
   (default-text-scale-mode t))
+
+(use-package del-sel
+  :no-require
+  :config
+  (delete-selection-mode 1))
 
 (use-package dired-sidebar
   :ensure t
@@ -378,6 +367,12 @@
   :ensure t
   :config
   (global-git-gutter-mode t))
+
+(use-package grep
+  :no-require
+  :custom
+  (grep-highlight-matches t)
+  (grep-scroll-output t))
 
 (use-package haskell-mode
   :ensure t
@@ -631,11 +626,10 @@
 (use-package multiple-cursors
   :ensure t
   :bind
-  (("C-<" . mc/mark-previous-like-this)
-   ("C->" . mc/mark-next-like-this)
-   ("C-+" . mc/mark-next-like-this)
+  (("C-<"     . mc/mark-previous-like-this)
+   ("C->"     . mc/mark-next-like-this)
+   ("C-+"     . mc/mark-next-like-this)
    ("C-c C-<" . mc/mark-all-like-this)
-   ;; From active region to multiple cursors:
    ("C-c c r" . set-rectangular-region-anchor)
    ("C-c c c" . mc/edit-lines)
    ("C-c c e" . mc/edit-ends-of-lines)
@@ -657,7 +651,8 @@
       (set-buffer term-buffer)
       (multi-term-internal)
       (switch-to-buffer term-buffer)))
-
+  :custom
+  (multi-term-scroll-to-bottom-on-output 'others) ; Experiment, was nil. mas-2/18/2018
   :config
   (require 'term)
 
@@ -885,6 +880,12 @@
     (prettify-symbols-mode t))
   :hook (scala-mode . my-scala-mode-hook))
 
+(use-package scroll-bar
+  :config
+  (setq-default scroll-margin 3
+                scroll-conservatively 10)
+  (set-scroll-bar-mode nil))
+
 (use-package selected
   :ensure t
   :defer 5
@@ -954,6 +955,10 @@
   (("C-x o" . switch-window)
    ("C-x 9" . switch-window-then-delete)))
 
+(use-package term
+  :custom
+  (term-scroll-to-bottom-on-output 'this))
+
 (use-package tidy
   :ensure t
   :commands (tidy-buffer
@@ -998,10 +1003,10 @@
 
 (use-package workgroups2
   :ensure t
-  :config
-  (setq wg-emacs-exit-save-behavior 'save
-        wg-flag-modified t)
-  ;; (workgroups-mode 0)
+  ;; :config
+  ;; (setq wg-emacs-exit-save-behavior 'save
+  ;;       wg-flag-modified t)
+  ;; ;; (workgroups-mode 0)
   )
 
 (use-package yaml-mode
