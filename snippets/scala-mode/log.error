@@ -1,0 +1,5 @@
+# Author: Marc Saegesser <marc@saegesser.org>
+# name: error logging
+# key: loge
+# --
+logger.error(s"${0:message}")

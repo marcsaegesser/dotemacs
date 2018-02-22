@@ -1,5 +1,7 @@
-(require-package 'unfill)
-(require-package 'whole-line-or-region)
+(use-package unfill
+  :ensure t)
+(use-package whole-line-or-region
+  :ensure t)
 
 (when (fboundp 'electric-pair-mode)
   (setq-default electric-pair-mode 1))
@@ -56,58 +58,67 @@
 (global-set-key (kbd "RET") 'newline-and-indent)
 
 
-(require-package 'undo-tree)
-(global-undo-tree-mode)
-(diminish 'undo-tree-mode)
+(use-package undo-tree
+  :ensure t
+  :diminish
+  :config
+  (global-undo-tree-mode))
 
-(require-package 'volatile-highlights)
-(require 'volatile-highlights)
-(volatile-highlights-mode t)
+(use-package volatile-highlights
+  :ensure t
+  :diminish
+  :config
+  (volatile-highlights-mode t))
 
 ;;----------------------------------------------------------------------------
 ;; Zap *up* to char is a handy pair for zap-to-char
 ;;----------------------------------------------------------------------------
-(autoload 'zap-up-to-char "misc" "Kill up to, but not including ARGth occurrence of CHAR.")
-(global-set-key (kbd "M-Z") 'zap-up-to-char)
+;; (autoload 'zap-up-to-char "misc" "Kill up to, but not including ARGth occurrence of CHAR.")
+;; (global-set-key (kbd "M-Z") 'zap-up-to-char)
 
 ;;----------------------------------------------------------------------------
 ;; Don't disable narrowing commands
 ;;----------------------------------------------------------------------------
-(put 'narrow-to-region 'disabled nil)
-(put 'narrow-to-page 'disabled nil)
-(put 'narrow-to-defun 'disabled nil)
+;; (put 'narrow-to-region 'disabled nil)
+;; (put 'narrow-to-page 'disabled nil)
+;; (put 'narrow-to-defun 'disabled nil)
 
 ;;----------------------------------------------------------------------------
 ;; Show matching parens
 ;;----------------------------------------------------------------------------
-(require-package 'mic-paren)
-(paren-activate)     ; activating mic-paren
+(use-package mic-paren
+  :ensure t
+  :defer 5
+  :config
+  (paren-activate))
 
 ;;----------------------------------------------------------------------------
 ;; Expand region
 ;;----------------------------------------------------------------------------
-(require-package 'expand-region)
-(global-set-key (kbd "C-=") 'er/expand-region)
-
+(use-package expand-region
+  :bind ("C-=" . er/expand-region))
 
 ;;----------------------------------------------------------------------------
 ;; Fix per-window memory of buffer point positions
 ;;----------------------------------------------------------------------------
-(require-package 'pointback)
-(global-pointback-mode)
-(eval-after-load 'skeleton
-  '(defadvice skeleton-insert (before disable-pointback activate)
-     "Disable pointback when using skeleton functions like `sgml-tag'."
-     (when pointback-mode
-       (message "Disabling pointback.")
-       (pointback-mode -1))))
-
+;; (require-package 'pointback)
+;; (global-pointback-mode)
+;; (eval-after-load 'skeleton
+;;   '(defadvice skeleton-insert (before disable-pointback activate)
+;;      "Disable pointback when using skeleton functions like `sgml-tag'."
+;;      (when pointback-mode
+;;        (message "Disabling pointback.")
+;;        (pointback-mode -1))))
+(use-package pointback
+  :ensure t
+  :config
+  (global-pointback-mode))
 
 ;;----------------------------------------------------------------------------
 ;; Don't disable case-change functions
 ;;----------------------------------------------------------------------------
-(put 'upcase-region 'disabled nil)
-(put 'downcase-region 'disabled nil)
+;; (put 'upcase-region 'disabled nil)
+;; (put 'downcase-region 'disabled nil)
 
 
 ;;----------------------------------------------------------------------------
@@ -122,41 +133,46 @@
 ;; To be able to M-x without meta
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 
-(global-set-key (kbd "C-x 9") 'delete-other-window)
-
 ;; More convenient join-line bindings
-(global-set-key (kbd "C-M-j") 'join-line)
-(global-set-key (kbd "C-M-J") (lambda () (interactive) (join-line 1)))
+(global-set-key (kbd "C-M-S-j") 'join-line)
+(global-set-key (kbd "C-M-j") (lambda () (interactive) (join-line 1)))
 
 (global-set-key (kbd "C-.") 'set-mark-command)
 (global-set-key (kbd "C-x C-.") 'pop-global-mark)
 
 
-(require-package 'avy)
-(global-set-key (kbd "C-;") 'avy-goto-subword-1)
-(global-set-key (kbd "C-:") 'avy-goto-word-0)
-(global-set-key (kbd "M-g M-g") 'avy-goto-line)
-(setq avy-background t)
+(use-package avy
+  :ensure t
+  :init (setq avy-background t)
+  :bind (("C-;" . avy-goto-subword-1)
+         ("C-:" . avy-goto-word-0)
+         ("M-g M-g" . avy-goto-line))
+  )
 
-(require-package 'multiple-cursors)
-;; multiple-cursors
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-+") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-;; From active region to multiple cursors:
-(global-set-key (kbd "C-c c r") 'set-rectangular-region-anchor)
-(global-set-key (kbd "C-c c c") 'mc/edit-lines)
-(global-set-key (kbd "C-c c e") 'mc/edit-ends-of-lines)
-(global-set-key (kbd "C-c c a") 'mc/edit-beginnings-of-lines)
+(use-package avy-zap
+  :ensure t
+  :bind (("M-z" . avy-zap-to-char-dwim)
+         ("M-Z" . avy-zap-up-to-char-dwim)))
 
-;; smooth-scrolling
-(require-package 'smooth-scroll)
-(require 'smooth-scroll)
-;; (smooth-scroll-mode nil)
-(global-set-key (kbd "C-u") 'scroll-down)
-(global-set-key (kbd "C-M-n") 'scroll-up-1)
-(global-set-key (kbd "C-M-p") 'scroll-down-1)
+(use-package multiple-cursors
+  :ensure t
+  :bind
+  (("C-<" . mc/mark-previous-like-this)
+   ("C->" . mc/mark-next-like-this)
+   ("C-+" . mc/mark-next-like-this)
+   ("C-c C-<" . mc/mark-all-like-this)
+   ;; From active region to multiple cursors:
+   ("C-c c r" . set-rectangular-region-anchor)
+   ("C-c c c" . mc/edit-lines)
+   ("C-c c e" . mc/edit-ends-of-lines)
+   ("C-c c a" . mc/edit-beginnings-of-lines)))
+
+(use-package smooth-scroll
+  :ensure t
+  :bind
+  (("C-u" . scroll-down)
+   ("C-M-n" . scroll-up-1)
+   ("C-M-p" . scroll-down-1)))
 
 ;; Buffer/Frame navigation
 (global-set-key (kbd "C-S-n") 'next-buffer)
@@ -164,18 +180,18 @@
 (global-set-key (kbd "C-M-S-n") 'next-multiframe-window)
 (global-set-key (kbd "C-M-S-p") 'previous-multiframe-window)
 
-(defun duplicate-line ()
-  "Insert a copy of the current line after the current line."
-  (interactive)
-  (save-excursion
-    (let ((line-text (buffer-substring-no-properties
-                      (line-beginning-position)
-                      (line-end-position))))
-      (move-end-of-line 1)
-      (newline)
-      (insert line-text))))
+;; (defun duplicate-line ()
+;;   "Insert a copy of the current line after the current line."
+;;   (interactive)
+;;   (save-excursion
+;;     (let ((line-text (buffer-substring-no-properties
+;;                       (line-beginning-position)
+;;                       (line-end-position))))
+;;       (move-end-of-line 1)
+;;       (newline)
+;;       (insert line-text))))
 
-(global-set-key (kbd "C-c p") 'duplicate-line)
+;; (global-set-key (kbd "C-c p") 'duplicate-line)
 
 ;; Train myself to use M-f and M-b instead
 (global-unset-key [M-left])
@@ -196,9 +212,14 @@
 ;;----------------------------------------------------------------------------
 ;; Page break lines
 ;;----------------------------------------------------------------------------
-(require-package 'page-break-lines)
-(global-page-break-lines-mode)
-(diminish 'page-break-lines-mode)
+;; (require-package 'page-break-lines)
+;; (global-page-break-lines-mode)
+;; (diminish 'page-break-lines-mode)
+(use-package page-break-lines
+  :ensure t
+  :diminish
+  :config
+  (global-page-break-lines-mode))
 
 ;;----------------------------------------------------------------------------
 ;; Fill column indicator
@@ -270,23 +291,23 @@
 (diminish 'whole-line-or-region-mode)
 (make-variable-buffer-local 'whole-line-or-region-mode)
 
-(defun suspend-mode-during-cua-rect-selection (mode-name)
-  "Add an advice to suspend `MODE-NAME' while selecting a CUA rectangle."
-  (let ((flagvar (intern (format "%s-was-active-before-cua-rectangle" mode-name)))
-        (advice-name (intern (format "suspend-%s" mode-name))))
-    (eval-after-load 'cua-rect
-      `(progn
-         (defvar ,flagvar nil)
-         (make-variable-buffer-local ',flagvar)
-         (defadvice cua--activate-rectangle (after ,advice-name activate)
-           (setq ,flagvar (and (boundp ',mode-name) ,mode-name))
-           (when ,flagvar
-             (,mode-name 0)))
-         (defadvice cua--deactivate-rectangle (after ,advice-name activate)
-           (when ,flagvar
-             (,mode-name 1)))))))
+;; (defun suspend-mode-during-cua-rect-selection (mode-name)
+;;   "Add an advice to suspend `MODE-NAME' while selecting a CUA rectangle."
+;;   (let ((flagvar (intern (format "%s-was-active-before-cua-rectangle" mode-name)))
+;;         (advice-name (intern (format "suspend-%s" mode-name))))
+;;     (eval-after-load 'cua-rect
+;;       `(progn
+;;          (defvar ,flagvar nil)
+;;          (make-variable-buffer-local ',flagvar)
+;;          (defadvice cua--activate-rectangle (after ,advice-name activate)
+;;            (setq ,flagvar (and (boundp ',mode-name) ,mode-name))
+;;            (when ,flagvar
+;;              (,mode-name 0)))
+;;          (defadvice cua--deactivate-rectangle (after ,advice-name activate)
+;;            (when ,flagvar
+;;              (,mode-name 1)))))))
 
-(suspend-mode-during-cua-rect-selection 'whole-line-or-region-mode)
+;; (suspend-mode-during-cua-rect-selection 'whole-line-or-region-mode)
 
 
 
@@ -318,7 +339,7 @@ With arg N, insert N newlines."
     (end-of-line)
     (indent-according-to-mode)))
 
-(global-set-key [remap open-line] 'sanityinc/open-line-with-reindent)
+;;(global-set-key [remap open-line] 'sanityinc/open-line-with-reindent)
 
 
 ;;----------------------------------------------------------------------------
@@ -338,14 +359,14 @@ With arg N, insert N newlines."
 
 
 
-(require-package 'visual-regexp)
-(global-set-key [remap query-replace-regexp] 'vr/query-replace)
-(global-set-key [remap replace-regexp] 'vr/replace)
+;; (require-package 'visual-regexp)
+;; (global-set-key [remap query-replace-regexp] 'vr/query-replace)
+;; (global-set-key [remap replace-regexp] 'vr/replace)
 
 
 
-(when (executable-find "ag")
-  (require-package 'ag))
+;; (when (executable-find "ag")
+;;   (require-package 'ag))
 
 
 (provide 'init-editing-utils)

@@ -1,0 +1,5 @@
+# Author: Marc Saegesser <marc@saegesser.org>
+# name: warn logging
+# key: logw
+# --
+logger.warn(s"${0:message}")
