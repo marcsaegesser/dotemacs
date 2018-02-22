@@ -4,8 +4,6 @@
 (package-initialize)
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-;; (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
-;; (add-to-list 'load-path user-emacs-directory)
 
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
@@ -197,7 +195,9 @@
        (setq company-backends
              (mapcar #'company-mode/backend-with-yas company-backends))))
 
-  (global-company-mode 1))
+  (global-company-mode 1)
+  :hook ((term-mode . (lambda () (company-mode -1)))
+         (sbt-mode  . (lambda () (company-mode -1)))))
 
 (use-package company-elisp
   :after company
@@ -703,14 +703,12 @@
   :commands origami-mode
   :hook (prog-mode . origami-mode)
   :bind
-  (("M-p"     . origami-recursively-toggle-node)
-   ("C-c o t" . origami-toggle-node)
+  (("C-c o t" . origami-toggle-node)
+   ("C-c o T" . origami-recursively-toggle-node)
    ("C-c o o" . origami-open-node)
    ("C-c o O" . origami-open-node-recursively)
    ("C-c o c" . origami-close-node)
    ("C-c o C" . origami-close-node-recursively)
-   ("C-c o t" . origami-toggle-node)
-   ("C-c o T" . origami-forward-toggle-node)
    ("C-c o n" . origami-forward-fold)
    ("C-c o p" . origami-previous-fold)
    ("C-c o R" . origami-reset)))
