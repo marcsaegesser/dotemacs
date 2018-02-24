@@ -563,10 +563,6 @@
   (flycheck-add-mode 'javascript-eslint 'js2-mode)
   (flycheck-mode 1))
 
-(use-package js3-mode
-  ;; jww (2017-12-10): Need to configure.
-  :disabled t)
-
 (use-package json-mode
   :ensure t
   :mode "\\.json\\'")
@@ -744,6 +740,7 @@
                      'paredit-close-round))
 (use-package paredit-everywhere
   :ensure t
+  :bind (("M-[" . paredit-wrap-square))
   :hook (prog-mode . paredit-everywhere-mode))
 
 (use-package personal
@@ -895,7 +892,8 @@
               ("d" . downcase-region)
               ("u" . upcase-region)
               ("r" . reverse-region)
-              ("s" . sort-lines))
+              ("s" . sort-lines)
+              ("q" . selected-off))
   :config
   (selected-global-mode 1))
 
@@ -920,6 +918,45 @@
   :after smart-mode-line
   :config
   (sml/apply-theme 'powerline))
+
+;; Borrowed from Sam Halliday but I haven't been able to make this transistion work for me, yet
+;; (use-package smartparens
+;;   :ensure t
+;;   :diminish smartparens-mode
+;;   :commands
+;;   smartparens-strict-mode
+;;   smartparens-mode
+;;   sp-restrict-to-pairs-interactive
+;;   sp-local-pair
+;;   :init
+;;   (setq sp-interactive-dwim t)
+;;   :config
+;;   (require 'smartparens-config)
+;;   (sp-use-smartparens-bindings)
+;;   (sp-pair "(" ")" :wrap "C-(") ;; how do people live without this?
+;;   (sp-pair "[" "]" :wrap "s-[") ;; C-[ sends ESC
+;;   (sp-pair "{" "}" :wrap "C-{")
+;;   (sp-pair "<" ">" :wrap "C-<")
+
+;;   ;; nice whitespace / indentation when creating statements
+;;   (sp-local-pair '(c-mode java-mode) "(" nil :post-handlers '(("||\n[i]" "RET")))
+;;   (sp-local-pair '(c-mode java-mode) "{" nil :post-handlers '(("||\n[i]" "RET")))
+;;   (sp-local-pair '(java-mode) "<" nil :post-handlers '(("||\n[i]" "RET")))
+
+;;   ;; WORKAROUND https://github.com/Fuco1/smartparens/issues/543
+;;   (bind-key "C-<left>" nil smartparens-mode-map)
+;;   (bind-key "C-<right>" nil smartparens-mode-map)
+
+;;   (bind-key "s-{" 'sp-rewrap-sexp smartparens-mode-map)
+
+;;   (bind-key "s-<delete>" 'sp-kill-sexp smartparens-mode-map)
+;;   (bind-key "s-<backspace>" 'sp-backward-kill-sexp smartparens-mode-map)
+;;   (bind-key "s-<home>" 'sp-beginning-of-sexp smartparens-mode-map)
+;;   (bind-key "s-<end>" 'sp-end-of-sexp smartparens-mode-map)
+;;   (bind-key "s-<left>" 'sp-beginning-of-previous-sexp smartparens-mode-map)
+;;   (bind-key "s-<right>" 'sp-next-sexp smartparens-mode-map)
+;;   (bind-key "s-<up>" 'sp-backward-up-sexp smartparens-mode-map)
+;;   (bind-key "s-<down>" 'sp-down-sexp smartparens-mode-map))
 
 (use-package smex
   :ensure t
