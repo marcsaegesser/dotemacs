@@ -626,10 +626,10 @@
    ("C->"     . mc/mark-next-like-this)
    ("C-+"     . mc/mark-next-like-this)
    ("C-c C-<" . mc/mark-all-like-this)
-   ("C-c c r" . set-rectangular-region-anchor)
-   ("C-c c c" . mc/edit-lines)
-   ("C-c c e" . mc/edit-ends-of-lines)
-   ("C-c c a" . mc/edit-beginnings-of-lines)))
+   ("C-c m r" . set-rectangular-region-anchor)
+   ("C-c m c" . mc/edit-lines)
+   ("C-c m e" . mc/edit-ends-of-lines)
+   ("C-c m a" . mc/edit-beginnings-of-lines)))
 
 (use-package multi-term
   :ensure t
@@ -688,7 +688,11 @@
 
 (use-package org
   :init
-  (setq org-src-fontify-natively t))
+  (setq org-src-fontify-natively t)
+  :bind
+  (("C-c c" . org-capture))
+  :config
+  (setq org-default-notes-file "~/notes.org"))
 
 (use-package org-bullets
   :ensure t
