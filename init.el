@@ -36,8 +36,8 @@
 ;; Preferences
 (setq-default
  blink-cursor-delay 0
-  browse-url-browser-function 'browse-url-generic
- browse-url-generic-program "google-chrome" 
+ browse-url-browser-function 'browse-url-generic
+ browse-url-generic-program "google-chrome"
  indent-tabs-mode nil
  inhibit-startup-screen t
  inhibit-startup-echo-area-message t
@@ -721,6 +721,7 @@
 
 (use-package paredit
   :ensure t
+  :disabled   ;; 2/24/2018 mas -- Switching to smartparens, at least for now
   ;; :diminish
   :hook ((lisp-mode emacs-lisp-mode) . paredit-mode)
   :bind (:map paredit-mode-map
@@ -744,6 +745,7 @@
                      'paredit-close-round))
 (use-package paredit-everywhere
   :ensure t
+  :disabled   ;; 2/24/2018 mas -- Switching to smartparens, at least for now
   :bind (("M-[" . paredit-wrap-square))
   :hook (prog-mode . paredit-everywhere-mode))
 
@@ -873,7 +875,7 @@
     (setq prettify-symbols-alist scala-prettify-symbols-alist
           indent-tabs-mode nil)
     (rainbow-delimiters-mode t)
-    (electric-pair-mode t)
+    ;; (electric-pair-mode t)  ;; Not needed with smartparens, remove when transition is complete
     ;; (smartparens-strict-mode t)
     (highlight-symbol-mode t)
     (prettify-symbols-mode t))
@@ -924,43 +926,41 @@
   (sml/apply-theme 'powerline))
 
 ;; Borrowed from Sam Halliday but I haven't been able to make this transistion work for me, yet
-;; (use-package smartparens
-;;   :ensure t
-;;   :diminish smartparens-mode
-;;   :commands
-;;   smartparens-strict-mode
-;;   smartparens-mode
-;;   sp-restrict-to-pairs-interactive
-;;   sp-local-pair
-;;   :init
-;;   (setq sp-interactive-dwim t)
-;;   :config
-;;   (require 'smartparens-config)
-;;   (sp-use-smartparens-bindings)
-;;   (sp-pair "(" ")" :wrap "C-(") ;; how do people live without this?
-;;   (sp-pair "[" "]" :wrap "s-[") ;; C-[ sends ESC
-;;   (sp-pair "{" "}" :wrap "C-{")
-;;   (sp-pair "<" ">" :wrap "C-<")
+(use-package smartparens
+  :ensure t
+  ;; :diminish smartparens-mode
+  :commands (smartparens-strict-mode
+             smartparens-mode
+             sp-restrict-to-pairs-interactive
+             sp-local-pair)
+  :init
+  (setq sp-interactive-dwim t)
+  ;; :bind (:map smartparens-mode-map
+  ;;             ("s-{"           . sp-rewrap-sexp)
+  ;;             ("s-<delete>"    . sp-kill-sexp)
+  ;;             ("s-<backspace>" . sp-backward-kill-sexp)
+  ;;             ("s-<home>"      . sp-beginning-of-sexp)
+  ;;             ("s-<end>"       . sp-end-of-sexp)
+  ;;             ("s-<left>"      . sp-beginning-of-previous-sexp)
+  ;;             ("s-<right>"     . sp-next-sexp)
+  ;;             ("s-<up>"        . sp-backward-up-sexp)
+  ;;             ("s-<down>"      . sp-down-sexp)
+  ;;             ("C-<left>"      . nil)
+  ;;             ("C-<right>"     . nil))
+  :hook (prog-mode . smartparens-mode)
+  :config
+  (require 'smartparens-config)
+  (sp-use-smartparens-bindings)
+  ;; (sp-pair "(" ")" :wrap "C-(") ;; how do people live without this?
+  ;; (sp-pair "[" "]" :wrap "s-[") ;; C-[ sends ESC
+  ;; (sp-pair "{" "}" :wrap "C-{")
+  ;; (sp-pair "<" ">" :wrap "C-<")
 
-;;   ;; nice whitespace / indentation when creating statements
-;;   (sp-local-pair '(c-mode java-mode) "(" nil :post-handlers '(("||\n[i]" "RET")))
-;;   (sp-local-pair '(c-mode java-mode) "{" nil :post-handlers '(("||\n[i]" "RET")))
-;;   (sp-local-pair '(java-mode) "<" nil :post-handlers '(("||\n[i]" "RET")))
-
-;;   ;; WORKAROUND https://github.com/Fuco1/smartparens/issues/543
-;;   (bind-key "C-<left>" nil smartparens-mode-map)
-;;   (bind-key "C-<right>" nil smartparens-mode-map)
-
-;;   (bind-key "s-{" 'sp-rewrap-sexp smartparens-mode-map)
-
-;;   (bind-key "s-<delete>" 'sp-kill-sexp smartparens-mode-map)
-;;   (bind-key "s-<backspace>" 'sp-backward-kill-sexp smartparens-mode-map)
-;;   (bind-key "s-<home>" 'sp-beginning-of-sexp smartparens-mode-map)
-;;   (bind-key "s-<end>" 'sp-end-of-sexp smartparens-mode-map)
-;;   (bind-key "s-<left>" 'sp-beginning-of-previous-sexp smartparens-mode-map)
-;;   (bind-key "s-<right>" 'sp-next-sexp smartparens-mode-map)
-;;   (bind-key "s-<up>" 'sp-backward-up-sexp smartparens-mode-map)
-;;   (bind-key "s-<down>" 'sp-down-sexp smartparens-mode-map))
+  ;; nice whitespace / indentation when creating statements
+  (sp-local-pair '(c-mode java-mode) "(" nil :post-handlers '(("||\n[i]" "RET")))
+  (sp-local-pair '(c-mode java-mode) "{" nil :post-handlers '(("||\n[i]" "RET")))
+  (sp-local-pair '(java-mode) "<" nil :post-handlers '(("||\n[i]" "RET")))
+  (smartparens-global-mode t))
 
 (use-package smex
   :ensure t
