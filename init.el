@@ -66,8 +66,8 @@
 (tool-bar-mode 0)
 (transient-mark-mode t)
 
-(when (fboundp 'electric-pair-mode)
-  (setq-default electric-pair-mode 1))
+;; (when (fboundp 'electric-pair-mode)    ;; 2/24/2018 mas -- Switching to smartparens
+;;   (setq-default electric-pair-mode 1))
 
 
 (global-set-key (kbd "RET") 'newline-and-indent)
@@ -592,7 +592,7 @@
   :mode (("\\`README\\.md\\'" . gfm-mode)
          ("\\.md\\'"          . markdown-mode)
          ("\\.markdown\\'"    . markdown-mode))
-  :init (setq markdown-command "multimarkdown"))
+  :init (setq markdown-command "pandoc --from=markdown_github"))
 
 (use-package markdown-preview-mode
   :ensure t
@@ -871,14 +871,28 @@
       ("<==>" . ?⟺)
       ("~>" . ?⇝)
       ("<~" . ?⇜)))
+  (defun my-scala-wrap-indented (_1 action _2)
+    "Post handler for the wrap ACTION, putting the region on indented newlines."
+    (when (eq action 'wrap)
+      (sp-get sp-last-wrapped-region
+        (let ((beg :beg-in)
+              (end :end-in))
+          (save-excursion
+            (goto-char end)
+            (newline-and-indent))
+          (indent-region beg end)))))
   (defun my-scala-mode-hook ()
     (setq prettify-symbols-alist scala-prettify-symbols-alist
           indent-tabs-mode nil)
     (rainbow-delimiters-mode t)
-    ;; (electric-pair-mode t)  ;; Not needed with smartparens, remove when transition is complete
-    ;; (smartparens-strict-mode t)
+    (smartparens-strict-mode t)
     (highlight-symbol-mode t)
-    (prettify-symbols-mode t))
+    (prettify-symbols-mode t)
+    (sp-local-pair 'scala-mode "{" nil
+                   :post-handlers '(("||\n[i]" "RET")
+                                    ("| " "SPC")
+                                    my-scala-wrap-indented))
+    )
   :hook (scala-mode . my-scala-mode-hook))
 
 (use-package scroll-bar
@@ -887,21 +901,21 @@
                 scroll-conservatively 10)
   (set-scroll-bar-mode nil))
 
-(use-package selected
-  :ensure t
-  :defer 5
-  :diminish selected-minor-mode
-  :bind (:map selected-keymap
-              ("[" . align-code)
-              ("f" . fill-region)
-              ("U" . unfill-region)
-              ("d" . downcase-region)
-              ("u" . upcase-region)
-              ("r" . reverse-region)
-              ("s" . sort-lines)
-              ("q" . selected-off))
-  :config
-  (selected-global-mode 1))
+;; (use-package selected
+;;   :ensure t
+;;   :defer 5
+;;   :diminish selected-minor-mode
+;;   :bind (:map selected-keymap
+;;               ("[" . align-code)
+;;               ("f" . fill-region)
+;;               ("U" . unfill-region)
+;;               ("d" . downcase-region)
+;;               ("u" . upcase-region)
+;;               ("r" . reverse-region)
+;;               ("s" . sort-lines)
+;;               ("q" . selected-off))
+;;   :config
+;;   (selected-global-mode 1))
 
 (use-package server
   :unless noninteractive
@@ -928,7 +942,7 @@
 ;; Borrowed from Sam Halliday but I haven't been able to make this transistion work for me, yet
 (use-package smartparens
   :ensure t
-  ;; :diminish smartparens-mode
+  :diminish smartparens-mode
   :commands (smartparens-strict-mode
              smartparens-mode
              sp-restrict-to-pairs-interactive
@@ -947,7 +961,12 @@
   ;;             ("s-<down>"      . sp-down-sexp)
   ;;             ("C-<left>"      . nil)
   ;;             ("C-<right>"     . nil))
-  :hook (prog-mode . smartparens-mode)
+  :hook ((smartparens-mode
+          . (lambda()
+              (unbind-key "C-M-p" smartparens-mode-map)
+              (unbind-key "C-M-n" smartparens-mode-map)))
+         (prog-mode                   . smartparens-mode)
+         ((lisp-mode emacs-lisp-mode) . smartparens-strict-mode))
   :config
   (require 'smartparens-config)
   (sp-use-smartparens-bindings)
@@ -957,9 +976,9 @@
   ;; (sp-pair "<" ">" :wrap "C-<")
 
   ;; nice whitespace / indentation when creating statements
-  (sp-local-pair '(c-mode java-mode) "(" nil :post-handlers '(("||\n[i]" "RET")))
-  (sp-local-pair '(c-mode java-mode) "{" nil :post-handlers '(("||\n[i]" "RET")))
-  (sp-local-pair '(java-mode) "<" nil :post-handlers '(("||\n[i]" "RET")))
+  ;; (sp-local-pair '(c-mode java-mode) "(" nil :post-handlers '(("||\n[i]" "RET")))
+  ;; (sp-local-pair '(c-mode java-mode) "{" nil :post-handlers '(("||\n[i]" "RET")))
+  ;; (sp-local-pair '(java-mode) "<" nil :post-handlers '(("||\n[i]" "RET")))
   (smartparens-global-mode t))
 
 (use-package smex
@@ -1036,6 +1055,7 @@
 
 (use-package whole-line-or-region
   :ensure t
+  :diminish
   :config
   (whole-line-or-region-mode t)
   (make-variable-buffer-local 'whole-line-or-region-mode))
