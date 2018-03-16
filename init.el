@@ -619,6 +619,12 @@
   (setq mmm-global-mode 'buffers-with-submode-classes)
   (setq mmm-submode-decoration-level 2))
 
+;; (use-package moody
+;;   :ensure t
+;;   :config
+;;   (moody-replace-mode-line-buffer-identification)
+;;   (moody-replace-vc-mode))
+
 (use-package multiple-cursors
   :ensure t
   :bind
@@ -692,7 +698,12 @@
   :bind
   (("C-c c" . org-capture))
   :config
-  (setq org-default-notes-file "~/notes.org"))
+  (setq org-default-notes-file "~/Document/org/notes.org"
+        org-capture-templates
+        '(("t" "Todo" entry (file+headline "~/org/gtd.org" "Tasks")
+           "* TODO %?\n  %i\n  %a")
+          ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
+           "* %?\nEntered on %U\n  %i\n  %a"))))
 
 (use-package org-bullets
   :ensure t
@@ -712,6 +723,18 @@
    ("C-c o n" . origami-forward-fold)
    ("C-c o p" . origami-previous-fold)
    ("C-c o R" . origami-reset)))
+
+(use-package org-brain :ensure t
+  :init
+  (setq org-brain-path "Documents/org/brain")
+  :config
+  (setq org-id-track-globally t)
+  (setq org-id-locations-file "~/.emacs.d/.org-id-locations")
+  (push '("b" "Brain" plain (function org-brain-goto-end)
+          "* %i%?" :empty-lines 1)
+        org-capture-templates)
+  (setq org-brain-visualize-default-choices 'all)
+  (setq org-brain-title-max-length 12))
 
 (use-package page-break-lines
   :ensure t
