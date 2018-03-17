@@ -724,7 +724,9 @@
    ("C-c o p" . origami-previous-fold)
    ("C-c o R" . origami-reset)))
 
-(use-package org-brain :ensure t
+(use-package org-brain 
+  :ensure t
+  :after org
   :init
   (setq org-brain-path "Documents/org/brain")
   :config
