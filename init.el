@@ -669,6 +669,9 @@
   (defadvice term-process-pager (after term-process-rebind-keys activate)
     (define-key term-pager-break-map  "\177" 'term-pager-back-page)))
 
+(use-package nix-mode
+  :ensure t)
+
 (use-package nxml-mode
   :commands nxml-mode
   :bind (:map nxml-mode-map
