@@ -65,6 +65,7 @@
 (menu-bar-mode -1)
 (tool-bar-mode 0)
 (transient-mark-mode t)
+(global-auto-revert-mode t)
 
 ;; (when (fboundp 'electric-pair-mode)    ;; 2/24/2018 mas -- Switching to smartparens
 ;;   (setq-default electric-pair-mode 1))
@@ -270,6 +271,10 @@
   :config
   (delete-selection-mode 1))
 
+(use-package dired+
+  :ensure t
+  )
+
 (use-package dired-sidebar
   :ensure t
   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
@@ -295,6 +300,11 @@
     ;; M-x all-the-icons-install-fonts
     :ensure t
     :commands (all-the-icons-dired-mode)))
+
+(use-package dockerfile-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("Dockerfile" . dockerfile-mode)))
 
 (use-package ensime
   :ensure t ;; This will use the non-stable version! See http://ensime.github.io/editors/emacs/install/
