@@ -61,7 +61,7 @@
 (blink-cursor-mode 0)
 (cua-mode 0)
 (cua-selection-mode t) ; for rectangles, CUA is nice
-(fringe-mode 4)
+(when (display-graphic-p) (fringe-mode 4))
 (menu-bar-mode -1)
 (tool-bar-mode 0)
 (transient-mark-mode t)
@@ -308,7 +308,7 @@
 
 (use-package ensime
   :ensure t ;; This will use the non-stable version! See http://ensime.github.io/editors/emacs/install/
-  :pin melpa-stable
+  ;; :pin melpa-stable
   :preface
   (defun scala-ret-handler ()
     (interactive)
@@ -325,7 +325,7 @@
         ensime-graphical-tooltips nil
         ensime-implicit-gutter-icons nil
         ensime-startup-notification nil
-        ;; ensime-sbt-perform-on-save "compile"
+        ensime-sbt-perform-on-save "compile"
         ;; Modify default faces with bold for varField and valField
         ensime-sem-high-faces (nconc '((varField . (:inherit font-lock-warning-face :weight bold))
                                        (valField . (:inherit font-lock-constant-face :slant italic :weight bold)))
@@ -878,11 +878,23 @@
   :commands regex-tool)
 
 (use-package sbt-mode
-  :pin melpa)
+  :ensure t
+  :commands sbt-start sbt-command
+  :config
+  ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+  ;; allows using SPACE when in the minibuffer
+  (substitute-key-definition
+   'minibuffer-complete-word
+   'self-insert-command
+   minibuffer-local-completion-map))
+
+;; (use-package sbt-mode
+;;   ;; :pin melpa
+;;   )
 
 (use-package scala-mode
   :ensure t
-  :pin melpa
+  ;; :pin melpa
   :preface
   (defvar scala-prettify-symbols-alist
     '(("<=" . ?≤)
