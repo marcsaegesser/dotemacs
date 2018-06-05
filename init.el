@@ -306,6 +306,14 @@
   :config
   (add-to-list 'auto-mode-alist '("Dockerfile" . dockerfile-mode)))
 
+;; (use-package eclim
+;;   :ensure t
+;;   :custom
+;;   (eclim-eclipse-dirs      (expand-file-name "~/eclipse/java-oxygen/eclipse"))
+;;   (eclim-default-workspace (expand-file-name "~/work/ami-server/modules"))
+;;   :config
+;;   (add-hook 'java-mode-hook 'eclim-mode))
+
 (use-package ensime
   :ensure t ;; This will use the non-stable version! See http://ensime.github.io/editors/emacs/install/
   ;; :pin melpa-stable
@@ -334,6 +342,10 @@
         ;; ensime-startup-snapshot-notification nil ;; Acknowledge that we're crazy enough to use the dev branch.
         )
   )
+
+(use-package eterm-256color
+  :ensure t
+  :hook (term-mode . eterm-256color-mode))
 
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
