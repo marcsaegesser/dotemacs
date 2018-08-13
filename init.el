@@ -38,6 +38,7 @@
  blink-cursor-delay 0
  browse-url-browser-function 'browse-url-generic
  browse-url-generic-program "google-chrome"
+ c-basic-offset 4
  indent-tabs-mode nil
  inhibit-startup-screen t
  inhibit-startup-echo-area-message t
@@ -271,9 +272,9 @@
   :config
   (delete-selection-mode 1))
 
-(use-package dired+
-  :ensure t
-  )
+;; (use-package dired+
+;;   :ensure t
+;;   )
 
 (use-package dired-sidebar
   :ensure t
